@@ -1,0 +1,310 @@
+\section{Preliminaries}
+\label{sec:semantics}
+
+In this section, we first provide some basic notions about Declare, then we give some background about Process Mining.
+
+\subsection{The Declare Modeling Language}
+\label{sec:declare}
+The comparison between the use of procedural and declarative process modeling languages to model a business process has been largely investigated in the last years \cite{DBLP:conf/caise/ZugalPW11,DBLP:conf/bpm/PichlerWZPMR11,DBLP:conf/bpm/ReijersSS13}. The results of these studies have shown that procedural models are more suitable to support the execution of business processes in stable and predictable environments characterized by predefined procedures. In contrast, declarative process modeling languages like Declare work under an ``open world'' assumption and provide process participants with a set of rules that should not be violated. This approach is suitable to model unstable and unpredictable processes since process participants have the flexibility to follow any path that does not violate the modeled rules.
+%Compared to the procedural models, a declarative process model defines a set of constraints that should be followed during the process execution. In this way, a declarative model implicitly defines the control-flow as all the possible paths that do not violate any of the given constraints. In this way declarative models, differently from the procedural ones, enjoy flexibility.
+
+Declare has been first presented in~\cite{Pesic2007:DECLARE}.
+%The three main components it consists of are
+%\begin{enumerate}
+%\item	Designer (modeling tool), that is used for system settings and process model design
+%\item	Framework (process enactment tool), which is also used for communication with other programs and changing models at run-time
+%\item	Worklist (process execution tool), which is meant for users to execute traces and see recommendations
+%\end{enumerate}
+%Different application domains may require a different set of relation types (constraint templates). Therefore, Declare facilitates the definition of sets of constraint templates.
+A Declare model consists of a set of constraints applied to (atomic) activities.
+%Constraints, in turn, are based on templates. Templates are abstract parameterized patterns, and constraints are their concrete instantiations on real activities.
+%Templates have a user-friendly graphical representation understandable to the user.
+The semantics of Declare constraints can be can be expressed using LTL for finite traces \cite{DBLP:conf/ijcai/GiacomoV13}. %, making them verifiable and executable.
+%Each constraint inherits the graphical representation and semantics from its template.
+%The major benefit of using templates is that analysts do not have to be aware of the underlying logic-based formalization to understand the models. They work with the graphical representation of templates, while the underlying formulas remain hidden.
+%Table~\ref{tab:dec} reports the main Declare templates, their graphical representation and a textual description.
+%The reader can refer to \cite{Pesic2007:DECLARE} for a full description of the language.
+
+
+
+%Each constraint template has three attributes:
+%\begin{enumerate}
+%\item	A unique name
+%\item	Semantics specified in LTL
+%\item	Graphical representation (for visual representation)
+%\end{enumerate}
+
+%Here, we indicate template parameters with capital letters (see Table~\ref{tab:dec})
+%
+%
+%
+%
+%
+%and real activities in their
+%instantiations with lower case letters (e.g., constraint \Resp{\taska}{\taskb}). A trace is a sequence of events like $\langle \taska, \taska, \taskb, \taskc \rangle$.
+%There is a total of 19 different templates in the Declare modeling language: 5 of these are existence templates which involve only one event; 11 are relation templates which describe a dependency between two events and 3 are negative relation templates~\cite{maggietal2011}.
+%Declare templates can be grouped in three main categories: \emph{existence} templates (first 4 rows of the table), which involve only one event; \emph{(mutual) relation} templates (rows from 5 to 15), which describe a dependency between two events; and \emph{negative relation} templates (last 3 rows), which describe a negative dependency between two events.
+
+%\input{tables/declare-constraints}
+
+%\begin{table}[t!]
+%  \centering
+%  \input{tables/table-declare-constraints-verbose}
+%  \caption{Declare templates.}
+%  \vspace{-5mm}
+%  \label{tab:dec}
+%\end{table}
+
+%The first four rows of the table report the \textbf{existence templates}:
+%\begin{itemize}
+%\item $existence(n, A)$, which specifies that $A$ should occur at least $n$ times in a trace
+%\item	$absence(n +1, A)$, which specifies that $A$ should occur at most $n$ times
+%\item	$exactly(n, A)$ which specifies that $A$ should occur exactly $n$ times
+%\item	$init(A)$ which specifies that each trace should start with event $A$
+%\end{itemize}
+
+%The next rows report the \emph{relational templates}:
+%\begin{itemize}
+%\item	$responded$ $existence(A, B)$ which specifies that if event $A$ occurs, event $B$ should also occur
+%\item	$co-existence(A, B)$ which specifies that if one of the events $A$ or $B$ occurs, the other one should also occur
+%\item	$response(A, B)$ which specifies if event A occurs, event B should eventually occur after A
+%\item	$precedence(A, B)$ which specifies that event B should occur only if event A has occurred before
+%\item	$succession(A, B)$ which requires both precedence and response algorithms to hold between events A and B
+%\item	$alternate$ $response(A, B)$ which is the same as response but allows no repetitions of these events in between
+%\item	$alternate$ $precedence(A, B)$ which is the same as precedence but allows no repetitions of these events in between
+%\item	$alternate$ $succession(A, B)$ which is the same as succession but allows no repetitions of these events in between
+%\item	$chain$ $response(A, B)$ which is the same as response but the events must happen one after another
+%\item	$chain$ $precedence(A, B)$ which is the same as precedence but the events must happen one after another
+%\item	$chain$ $succession(A, B)$ which is the same as succession but the events must happen one after another
+%\end{itemize}
+
+%Finally, the last three rows report the \emph{negative relation templates}:
+%\begin{itemize}
+%\item	$not$ $co-existence(A, B)$ which specifies that A and B cannot occur together in the same process
+%\item	$not$ $succession(A, B)$ which specifies that that any occurrence of A cannot be eventually followed by B
+%\item	$not$ $chain$ $succession(A, B)$ which specifies that A cannot be directly followed by B
+%\end{itemize}
+
+One example of a Declare constraint is the \emph{response} constraint \Resp{\taska}{\taskb}. This constraint indicates that if $\taska$ {\it occurs}, $\taskb$ must eventually {\it follow}.
+Constraints of type \emph{alternate} express stronger types of relations specifying that activities must alternate without repetitions in between.
+%
+Even stronger ordering relations are specified by constraints of type \emph{chain}, which state that activities must occur one immediately after the other.
+Other constraints refer to the cardinality of an activity, e.g., $\taska$ has to occur at least once or at most once in a trace. There are also constraints that force activities to be mutually exclusive or not to occur one after the other in a trace.
+%The reader can refer to \cite{Pesic2007:DECLARE} for a full description of the language.
+
+Considering its semantics, the response constraint \Resp{\taska}{\taskb} is satisfied for traces
+$\langle \taskc, \taska, \taskb \rangle$, $\langle \taskb, \taskc, \taskb \rangle$ and $\langle \taska, \taskb, \taskb \rangle$.
+It is not satisfied for $\langle
+\taska, \taskc, \taskb, \taska \rangle$, because the second occurrence of $\taska$ is not followed by $\taskb$.
+%Additionally, in trace $\langle \taskb, \taskb, \taskc, \taskd \rangle$, the
+%considered response rule is satisfied in a trivial way because $a$ never occurs.
+%In this case, the rule is considered as \emph{vacuously
+%satisfied}~\cite{kupf:vacu03}.
+An \emph{activation} of a constraint in a trace is an event that ``triggers'' the constraint by imposing an obligation on the occurrence of another event (the \emph{target}). For example, for \Resp{\taska}{\taskb}, $\taska$ is an activation, because its occurrence forces $\taskb$ (the target) to be executed eventually.
+
+
+%
+%Constraint \emph{co-existence(A,B)} requires that if one of the actions \emph{A} or \emph{B} occur, the other one must also occur.
+%
+%
+%Declare also includes some negative constraints to explicitly forbid the execution of actions.
+%
+%The \emph{not co-existence(A,B)} constraint indicates that \emph{A} and \emph{B} can not occur together in the same interaction.
+%
+%According to the  constraint, any occurrence of $\taska$ can not be eventually followed by $\taskb$. Finally, the \emph{not chain succession(A,B)} constraint states that \emph{A} and \emph{B} can not occur one immediately after the other.
+
+
+%\begin{figure*}[t!]
+%	\centering
+%		\includegraphics[width=1.0\textwidth]{figures/Fracturetreatmentprocess-DeclareModel.pdf}
+%	\caption{The Declare model for a fracture treatment process.}
+%	\label{fig:fracture}
+	%\vspace{-.5cm}
+%\end{figure*}
+
+
+
+%An activation of a constraint can be a \emph{fulfillment} or a \emph{violation}
+%for that constraint. When a trace is perfectly compliant with respect to a
+%constraint, every activation of the constraint in the trace leads to a
+%fulfilment.
+%Consider, again, the response constraint \Resp{\taska}{\taskb}.
+%In trace $\langle \taska, \taska, \taskb, \taskc \rangle$, the constraint is activated and fulfilled twice,
+%whereas, in trace $\langle \taska, \taskb, \taskc, \taskb \rangle$, the same constraint is activated and fulfilled
+%only once. On the other hand, when a trace is not compliant with respect to a
+%constraint, %an activation of the constraint in the trace can lead to a
+%fulfilment but also to a violation (
+%at least one activation leads to a violation.
+%).
+%In trace $\langle
+%\taska, \taskb, \taska, \taskc \rangle$, for example, the response constraint
+%\Resp{\taska}{\taskb} is activated twice, but the first
+%activation leads to a fulfilment (eventually $\taskb$ occurs), whereas the second
+%activation leads to a violation ($\taskb$ does not occur subsequently).
+%Finally, there exist cases in which the constraint is not activated at all.
+%Consider, for instance, trace $\left\langle \taskb, \taskb, \taskc, \taskd\right\rangle$. The considered response constraint is satisfied in a trivial way because $\taska$ never occurs. In this case, we say that the constraint
+%is \emph{vacuously satisfied}~\cite{kupf:vacu03}. In~\cite{DBLP:conf/bpm/MaggiMCM16,DBLP:journals/is/CiccioMMM18}, the authors introduce the notion of semantical vacuity detection according to which a constraint is non-vacuously satisfied in a trace when it is activated at least once in that trace.
+
+%A Declare model containing multiple constraints is defined as a conjunction of the constraints. This means that the actions of users during execution must fulfill all constraints. Declare constraints can be either mandatory or optional.
+
+%The system forces its users to follow all mandatory constraints in the model. In case of optional constraints users have the ability to decide whether to follow the corresponding rule or to violate it. Optional constraints are not enforced by the Declare system during execution. When a user is about to perform an action that violates an optional constraint, a warning about the violation is presented and the user can decide whether to continue with the action and violate the constraint or to cancel the action and follow the constraint. The text of the warning can be specified in the definition of the constraint.
+%A model in Declare is mapped onto a set of LTL formulas. Based on these LTL formulas, automata are automatically generated to support enactment. Declare uses an algorithm that creates finite-words automata from LTL formulas of the constraints that are used. These automata are used both to drive the execution and to monitor the state of each constraint.
+
+%Some compositions of constraints in process models may cause errors that lead to problems at run-time. Thus, Declare verifies process models against different types of errors and finds a minimal set of constraints that causes a specific error. All models can be verified against dead activities and conflicting constraints. A dead activity is an activity that can never be executed in the model. A set of constraints is conflicting if there exists no execution that would fulfill all constraints~\cite{pesicetal2007}.
+
+%\subsection{\emph{Declare Miner} plugin in the ProM framework}
+
+%\paragraph{Prom Framework.}
+%ProM is a Process Mining framework that integrates the functionality of several existing Process Mining tools and provides many additional Process Mining plug-ins. It supports multiple formats and multiple languages such as Petri nets, EPCs, Social Networks and so on and so forth. The plug-ins can be used in several ways and combined to be applied in real-life situations~\cite{dongenetal2005}.
+
+%\paragraph{\emph{Declare Miner} plugin.}
+%The \emph{Declare Miner} plug-in for ProM allows users to discover a Declare model from a log by specifying a number of settings. There are two versions of the plug-in. The first one, the Declare Miner, requires a user-specified Declare language as input. The second one, the Declare Miner Default, uses a predefined Declare language and does not require any language as input. More information on the usage and set-up can be found at \url{http://www.win.tue.nl/declare/declare-miner/} .
+
+%In order to remove irrelevant constraints from the output set, the authors apply vacuity detection techniques \cite{Kupferman.Vardi/STTT2003:Vacuitydetection}. Constraints are considered as vacuously satisfied when no trace in the log violates them, yet no trace shows the effect of their application either. A vacuously satisfied constraint is, e.g., that every request is eventually acknowledged, in a trace that does not contain requests.
+
+
+  %There exist two variants of the plug-in: the classical one and the default version. While the former demands that users know a specific language for the definition of the Declare templates, the latter does not require knowl.
+%The first one, the Declare Miner, requires a user-specified Declare language as input. The second one, the Declare Miner Default, uses a predefined Declare language and does not require any language as input. More information on the usage and set-up can be found at \url{http://www.win.tue.nl/declare/declare-miner/} .
+
+
+Recently, an extension of the Declare language, Multi-Perspective Declare (MP-Declare), has been presented in \cite{DBLP:journals/eswa/BurattinMS16}. This extension not only captures control-flow constraints (like Declare), but takes also into consideration the data perspective. In particular, in MP-Declare, two types of data conditions can be defined: \emph{activation condition} and \emph{correlation condition}. In these conditions, data related to the activation of a constraint is expressed in the form $\cst{A.data}$, whereas data which relates to the target is expressed in the form $\cst{T.data}$.
+
+When the activation of an MP-Declare constraint occurs, the constraint is activated only if the corresponding activation condition is satisfied. For example, constraint $\Abse{1}{\cst{SendInvoice}}$ without conditions indicates that an invoice should never be sent. However, if we add an activation condition to it as follows:\footnote{Activation condition and correlation condition are  specified in a constraint with the format [Activation] [Correlation]}
+\begin{center}
+	$\Abse{1}{\cst{SendInvoice}}$ $[\cst{A.amount} < 100]$
+\end{center}
+this means that an invoice cannot be sent only if the paid amount is lower than 100.
+
+
+A correlation condition must be valid when the target of a constraint occurs and can involve data related to both activation and target. Therefore, this type of conditions can be used to specify correlations between two events. For example, the constraint:
+\begin{center}
+	$\Resp{\cst{ReceivePayment}}{\cst{SendInvoice}}$ \\
+	$[\cst{A.amount} > 100][\cst{T.orderID} = \cst{A.orderID}]$
+\end{center}
+will only be activated if the paid amount is greater than 100. If this happens, then the payment should be followed by sending an invoice for the same order.
+
+
+
+
+\subsection{Process Mining}
+\label{sec:procmining}
+
+%Process Mining~\cite{DBLP:books/sp/Aalst16} is still a rather young research discipline which lies between data mining and computational intelligence, and between process modeling and analysis.
+Process Mining~\cite{DBLP:books/sp/Aalst16} is a field studying techniques for analyzing business processes by using event logs recorded by the systems supporting their execution. Some of these techniques are developed to build a process model representing the behavior of the process as recorded in an event log (automated process discovery). Other Process Mining techniques allow users to compare the real behavior of a process derived from an event log and the expected behavior of the process represented as a process model (conformance checking), or to extend/enhance a process model using the information retrieved from a log.
+%Different Process Mining algorithms have been implemented in academic and commercial systems.
+The increasing interest from industry in Process Mining is witnessed by the growing number of software vendors providing tools for Process Mining.\footnote{http://fluxicon.com/disco/}\footnote{https://www.celonis.com/intelligent-business-cloud}\footnote{https://www.signavio.com/products/process-intelligence/}\footnote{https://www.my-invenio.com/}\footnote{https://www.minit.io/}
+%
+
+As already mentioned, the main input of any Process Mining technique is an \emph{event log}. XES (eXtensible Event Stream) \cite{XES-standard-2013,Verbeek10} is the standard for representing event logs in XML format. This standard represents a log as a set of traces (i.e., process executions) and traces as sequences of events. Each event in a trace represents the execution of an activity in the process. An event must always record a timestamp (when the corresponding activity was executed) and can (optionally) record additional information such as the resource executing the activity, or other data elements related to the event.
+
+%\begin{figure}[t]
+%\centering
+%\includegraphics[width=12cm]{figrefoverview}
+%\caption{Overview of the Process Mining spectrum.}
+%\label{figrefoverview}
+%\end{figure}
+
+%Fig.~\ref{figrefoverview} (based on
+
+%The main guiding principles and upcoming challenges of %such a recent research field
+%Process Mining have been reported in~\cite{IEEE2011:Manifesto}.
+%Purpose of the principles is supporting in
+%A list of guiding principles that aid in
+%The former serve as a means for process miners to orient their investigations in real-world environments.
+%avoiding mistakes that can be made when applying Process Mining in actual, real-life settings.
+%The latter shed light on relevant open issues that are worth being tackled in the future.
+% is presented in~\cite{aalstetal2012}. The guide consists of the following six principles:
+%For instance:
+%\begin{itemize}
+%\item	Event data should be treated as first-class citizens, which means that the event logs are classified under different maturity levels ranging from excellent to poor or 5 stars to 1 start respectively. The higher the maturity level, the more reliable are the results when Process Mining is applied to the log;
+%\item	Log extraction should be driven by questions because without concrete questions it is very difficult to extract reasonable information from event logs;
+%\item	Concurrency, choice and other basic control-flow constructs should be supported to make sure the generated models are fitting and easy to understand;
+%\item	Events should be related to model elements in order to support conformance checking and enhancement;
+%\item	Models should be treated as purposeful abstractions of reality due to the fact that the results may be used by various; stakeholders in different situations. It also helps with producing understandable maps;
+%\item	Process Mining should be a continuous process to cope with process changes.
+%\end{itemize}
+
+%Along-side key points and guide principles, there are challenges that need to be addressed due to the fact that Process Mining is, as mentioned before, a young discipline. These challenges are considered to be incomplete as, over time, new challenges may appear or existing challenges may disappear due to advances is Process Mining. Nevertheless, the challenges listed below are still relevant~\cite{aalstetal2012}.
+%Although the challenges are considered to be incomplete as, over time, new challenges may appear or existing challenges may disappear due to advances is Process Mining, most of them are still relevant:
+%\begin{itemize}
+%\item	Finding, merging, and cleaning event data;
+%\item	Dealing with complex event logs having diverse characteristics;
+%\item	Creating representative benchmarks;
+%\item	Dealing with concept drift;
+%\item	Improving the representational bias used for process discovery;
+%\item	Balancing between quality criteria such as fitness, simplicity, precision and generalization;
+%\item	Cross-organizational mining;
+%\item	Providing operational support;
+%\item	Combining Process Mining with other types of analysis;
+%\item	Improving usability for non-experts;
+%\end{itemize}
+
+
+%\subsection{Event Log}
+%Process Mining techniques rely on the existence of \emph{event logs}, sets of process case executions in the form of sequences of events.
+%In an event log:
+%\begin{itemize}
+%\item	Each event refers to an activity (a well-defined step in the process);
+%\item	Each event refers to a trace (a trace);
+%\item	Each event can have a performer also referred to as originator (the actor executing or initiating the activity);
+%\item	Events have a timestamp and are totally ordered.
+%\end{itemize}
+
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=\textwidth]{figures/XES_structure.png}
+%	\caption{Process log XML format and transactional model}
+%	\label{fig:xml_format}
+%\end{figure}
+
+%Since each information system has its own format for storing log files a generic XML format to store in a log information about process executions called MXML has been developed. The MXML format is presented in Fig.~\cref{fig:xml_format}. A log file typically contains information about events that took place in a system (\emph{AuditTrailEntry} in XML). Such events typically refer to a trace (\emph{ProcessInstance} in the XML) and a specific activity (\emph{WorkflowModelElement} in XML) within that trace. The originator and the timestamp are connected to the \emph{AuditTrailEntry} so they are always related to the event itself.
+%Fig.~\cite{fig:} shows the transactional model for activity lifecycles. The transactional model is adopted by several commercial systems~\cite{dongenetal2005}.
+
+%Even if MXML has been used as a standard for storing event logs for several years, based on practical experiences with applying MXML in about one hundred organizations, several problems and limitations related to MXML format have been discovered. One of the main problems is the semantics of additional attributes stored in the event log. In MXML, these are all treated as string values with a key and have no generally understood meaning. Another problem is the nomenclature used for different concepts. This is caused by the MXML's assumption that strictly structured process would be stored in this format.
+
+%Since each information system has its own format for storing log files a generic, a standard called \emph{eXtensible Event Stream} (\emph{XES}), has been developed  for representing and storing event logs. The XES meta-model is shown in Fig.\cref{fig:xes}.
+%To solve the problems encountered with MXML, and to create a standard that could also be used to store event logs from many different information systems directly, a new format has been developed called eXtensible Event Stream or XES. It enhances the MXML format in many ways as shown in~\cite{verbeeketal2010}.
+%A log file (\emph{Log}) typically contains information about events that took place in a system. Such events typically refer to a trace (\emph{Trace}), representing a trace execution, and a specific activity (\emph{Event}) within that trace. The \emph{Log}, \emph{Trace} and \emph{Event} elements only define the structure of the document: they do not contain any information themselves. To store any data in the XES format, attributes are used. Every attribute has a string based key, a known type, and a value of that type. Possible types are string, date, integer, float and boolean. Note that attributes can have attributes themselves which can be used to provide more specific information~\cite{verbeeketal2010}.
+
+%\begin{figure}
+%	\centering
+%		\includegraphics[width=.7\textwidth]{figures/XES_metamodel.png}
+%	\caption{XES Metamodel}
+%	\label{fig:xes}
+%\end{figure}
+
+
+%The advantages of XES are simplicity, flexibility, extensibility and expressivity. From these points of view it improves MXML.
+
+One of the main open issues in Process Mining is to develop multi-perspective analysis techniques that fully leverage the heterogeneous information available in an event log as stated in~\cite{IEEE2011:Manifesto}. This is especially true in the context of Multi-Perspective Declarative Process Mining.
+In this paper, we close this gap by using SAT as a solving technology for a number of classical problems in Multi-Perspective Declarative Process Mining, namely log generation, conformance checking and temporal query checking. In the following, we introduce these problems in detail.
+
+
+\paragraph{Generation of Event Logs} As already mentioned, one branch of Process Mining is automated process discovery. Although there are several real life logs publicly available that can be used to test and evaluate process discovery techniques (see \url{https://data.4tu.nl/repository/collection:event_logs_real}), these logs can be incomplete and/or contain noise. Therefore. in order to evaluate process discovery techniques in a controlled environment and allow the researchers to fine tune the developed algorithms, tools for the generation of synthetic event logs with given predefined characteristics are needed.
+%. However, these logs usually contain
+%imperfections and have some missing information that can alter the evaluation of
+%the discovery algorithms (e.g., they can be incomplete and/or contain noise).
+%For this reason, a common approach adopted for testing process discovery
+%algorithms is based on the use of synthetic logs created via simulation.
+%Synthetic logs with different predefined characteristics and
+
+
+%Starting from these needs, several model simulators and log generators have been
+%developed and are available in the literature based on procedural \cite{andrea11,Jensen:2007,Hee,Ehrig}
+%and declarative~\cite{Ackermann_et_al:2017,DiCiccio_et_al:2015,Schonig_et_al:2015} models.
+%However, data support in the currently existing tools is not present or it does not cover the entire semantics of MP-Declare.
+%This makes them not suitable for the evaluation of process discovery
+%techniques based on multi-perspective declarative process models. Such techniques have
+%recently attracted the attention of the Process Mining community and are useful
+%to mine processes working in dynamic environments
+%\cite{Pesic2006,Halpin,Pichler,diciccio.mecella/acmtmis2015:discoverydeclarativecontrol}.
+
+
+\paragraph{Conformance Checking}  Conformance checking techniques allow users to compare the behavior of a process observed in an event log with a model of the same process representing its expected behavior \cite{wires-replay,costBasedReplayEDOC,anne_confcheck_is}. There are several contexts in which the analysis of the deviations of the execution of a business process from a prescriptive specification is critical, e.g., in process auditing~\cite{auditing} or risk analysis~\cite{riskAnalysis}.
+
+
+\paragraph{Query Checking}
+Query checking \cite{DBLP:conf/otm/RaimCMMM14} aims at discovering temporal properties of a trace that are not known a priori, but that have a predefined structure. In particular, the inputs of query checking are a trace and a \textit{query}, i.e., a temporal logic formula containing one or more \emph{placeholders}. The output is a set of temporal logic formulas, which derive from the input query by replacing all the placeholders with propositional formulas, which make the overall formula satisfied in the trace.
+%The seminal work of \cite{Chan/CAV2000:TemporallogicQueries} considered Computation Tree Logic (CTL) \cite{Clarke.etal/ACMTPLS1986:CTL} as the language for expressing queries.
+%Unlike {LTL}, adopting a linear time assumption, {CTL} is a branching-time logic: the evaluation of the formula is based on a tree-like structure, where different evolutions of the system over time are simultaneously considered in different branches of the computation model.
+%Following the example of \cite{DBLP:conf/otm/RaimCMMM14} applying {LTL} query checking to discover (standard) declarative constraints, here we mine multi-perspective declarative processes out of event logs stored in databases through query checking.

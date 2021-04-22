@@ -1,0 +1,452 @@
+\pgfplotstableread[col sep=comma,header=true]{experiments/query1.csv}\fileQueryONE
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryONE}{[index] 0}] {alphSizeQueryONE} {\fileQueryONE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryONE}{[index] 1}] {tr20QueryONE} {\fileQueryONE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryONE}{[index] 2}] {tr25QueryONE} {\fileQueryONE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryONE}{[index] 3}] {tr30QueryONE} {\fileQueryONE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryONE}{[index] 4}] {tr40QueryONE} {\fileQueryONE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryONE}{[index] 5}] {tr50QueryONE} {\fileQueryONE}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query2.csv}\fileQueryTWO
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWO}{[index] 0}] {alphSizeQueryTWO} {\fileQueryTWO}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWO}{[index] 1}] {tr20QueryTWO} {\fileQueryTWO}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWO}{[index] 2}] {tr25QueryTWO} {\fileQueryTWO}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWO}{[index] 3}] {tr30QueryTWO} {\fileQueryTWO}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWO}{[index] 4}] {tr40QueryTWO}  {\fileQueryTWO}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWO}{[index] 5}] {tr50QueryTWO}  {\fileQueryTWO}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query3.csv}\fileQueryTHREE
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryTHREE}{[index] 0}] {alphSizeQueryTHREE} {\fileQueryTHREE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTHREE}{[index] 1}] {tr20QueryTHREE} {\fileQueryTHREE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTHREE}{[index] 2}] {tr25QueryTHREE} {\fileQueryTHREE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTHREE}{[index] 3}] {tr30QueryTHREE} {\fileQueryTHREE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTHREE}{[index] 4}] {tr40QueryTHREE}  {\fileQueryTHREE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTHREE}{[index] 5}] {tr50QueryTHREE}  {\fileQueryTHREE}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query4.csv}\fileQueryFOUR
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryFOUR}{[index] 0}] {alphSizeQueryFOUR} {\fileQueryFOUR}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFOUR}{[index] 1}] {tr20QueryFOUR} {\fileQueryFOUR}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFOUR}{[index] 2}] {tr25QueryFOUR} {\fileQueryFOUR}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFOUR}{[index] 3}] {tr30QueryFOUR} {\fileQueryFOUR}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFOUR}{[index] 4}] {tr40QueryFOUR}  {\fileQueryFOUR}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFOUR}{[index] 5}] {tr50QueryFOUR}  {\fileQueryFOUR}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query5.csv}\fileQueryFIVE
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryFIVE}{[index] 0}] {alphSizeQueryFIVE} {\fileQueryFIVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFIVE}{[index] 1}] {tr20QueryFIVE} {\fileQueryFIVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFIVE}{[index] 2}] {tr25QueryFIVE} {\fileQueryFIVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFIVE}{[index] 3}] {tr30QueryFIVE} {\fileQueryFIVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFIVE}{[index] 4}] {tr40QueryFIVE}  {\fileQueryFIVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryFIVE}{[index] 5}] {tr50QueryFIVE}  {\fileQueryFIVE}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query6.csv}\fileQuerySIX
+
+\pgfplotstablecreatecol[copy column from table={\fileQuerySIX}{[index] 0}] {alphSizeQuerySIX} {\fileQuerySIX}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySIX}{[index] 1}] {tr20QuerySIX} {\fileQuerySIX}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySIX}{[index] 2}] {tr25QuerySIX} {\fileQuerySIX}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySIX}{[index] 3}] {tr30QuerySIX} {\fileQuerySIX}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySIX}{[index] 4}] {tr40QuerySIX}  {\fileQuerySIX}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySIX}{[index] 5}] {tr50QuerySIX}  {\fileQuerySIX}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query7.csv}\fileQuerySEVEN
+
+\pgfplotstablecreatecol[copy column from table={\fileQuerySEVEN}{[index] 0}] {alphSizeQuerySEVEN} {\fileQuerySEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySEVEN}{[index] 1}] {tr20QuerySEVEN} {\fileQuerySEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySEVEN}{[index] 2}] {tr25QuerySEVEN} {\fileQuerySEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySEVEN}{[index] 3}] {tr30QuerySEVEN} {\fileQuerySEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySEVEN}{[index] 4}] {tr40QuerySEVEN}  {\fileQuerySEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQuerySEVEN}{[index] 5}] {tr50QuerySEVEN}  {\fileQuerySEVEN}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query8.csv}\fileQueryEIGHT
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryEIGHT}{[index] 0}] {alphSizeQueryEIGHT} {\fileQueryEIGHT}
+\pgfplotstablecreatecol[copy column from table={\fileQueryEIGHT}{[index] 1}] {tr20QueryEIGHT} {\fileQueryEIGHT}
+\pgfplotstablecreatecol[copy column from table={\fileQueryEIGHT}{[index] 2}] {tr25QueryEIGHT} {\fileQueryEIGHT}
+\pgfplotstablecreatecol[copy column from table={\fileQueryEIGHT}{[index] 3}] {tr30QueryEIGHT} {\fileQueryEIGHT}
+\pgfplotstablecreatecol[copy column from table={\fileQueryEIGHT}{[index] 4}] {tr40QueryEIGHT}  {\fileQueryEIGHT}
+\pgfplotstablecreatecol[copy column from table={\fileQueryEIGHT}{[index] 5}] {tr50QueryEIGHT}  {\fileQueryEIGHT}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query9.csv}\fileQueryNINE
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryNINE}{[index] 0}] {alphSizeQueryNINE} {\fileQueryNINE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryNINE}{[index] 1}] {tr20QueryNINE} {\fileQueryNINE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryNINE}{[index] 2}] {tr25QueryNINE} {\fileQueryNINE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryNINE}{[index] 3}] {tr30QueryNINE} {\fileQueryNINE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryNINE}{[index] 4}] {tr40QueryNINE}  {\fileQueryNINE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryNINE}{[index] 5}] {tr50QueryNINE}  {\fileQueryNINE}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query10.csv}\fileQueryTEN
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryTEN}{[index] 0}] {alphSizeQueryTEN} {\fileQueryTEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTEN}{[index] 1}] {tr20QueryTEN} {\fileQueryTEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTEN}{[index] 2}] {tr25QueryTEN} {\fileQueryTEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTEN}{[index] 3}] {tr30QueryTEN} {\fileQueryTEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTEN}{[index] 4}] {tr40QueryTEN}  {\fileQueryTEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTEN}{[index] 5}] {tr50QueryTEN}  {\fileQueryTEN}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query11.csv}\fileQueryELEVEN
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryELEVEN}{[index] 0}] {alphSizeQueryELEVEN} {\fileQueryELEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryELEVEN}{[index] 1}] {tr20QueryELEVEN} {\fileQueryELEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryELEVEN}{[index] 2}] {tr25QueryELEVEN} {\fileQueryELEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryELEVEN}{[index] 3}] {tr30QueryELEVEN} {\fileQueryELEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryELEVEN}{[index] 4}] {tr40QueryELEVEN}  {\fileQueryELEVEN}
+\pgfplotstablecreatecol[copy column from table={\fileQueryELEVEN}{[index] 5}] {tr50QueryELEVEN}  {\fileQueryELEVEN}
+
+\pgfplotstableread[col sep=comma,header=true]{experiments/query12.csv}\fileQueryTWELVE
+
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWELVE}{[index] 0}] {alphSizeQueryTWELVE} {\fileQueryTWELVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWELVE}{[index] 1}] {tr20QueryTWELVE} {\fileQueryTWELVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWELVE}{[index] 2}] {tr25QueryTWELVE} {\fileQueryTWELVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWELVE}{[index] 3}] {tr30QueryTWELVE} {\fileQueryTWELVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWELVE}{[index] 4}] {tr40QueryTWELVE}  {\fileQueryTWELVE}
+\pgfplotstablecreatecol[copy column from table={\fileQueryTWELVE}{[index] 5}] {tr50QueryTWELVE}  {\fileQueryTWELVE}
+
+
+\begin{table}
+\begin{center}
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		before row={%
+              \toprule
+              Trace length $\rightarrow$
+            & 20
+            & 25
+            & 30
+            & 40
+            & 50
+            \\
+		},
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{Response[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryONE,tr20QueryONE,tr25QueryONE,tr30QueryONE,tr40QueryONE,tr50QueryONE},	
+    columns/{alphSizeQueryONE}/.style={column name={},column type=C},	
+    columns/{tr20QueryONE}/.style={column name={},column type=C},
+    columns/{tr25QueryONE}/.style={column name={},column type=C},
+	columns/{tr30QueryONE}/.style={column name={},column type=C},
+    columns/{tr40QueryONE}/.style={column name={},column type=C},
+	columns/{tr50QueryONE}/.style={column name={},column type=C},
+	%%	
+    %%every row 0 column 0/.style={postproc cell content/.style={@cell content={3-50}}},
+    %%every row 1 column 0/.style={postproc cell content/.style={@cell content={51-75}}},
+    %%every row 2 column 0/.style={postproc cell content/.style={@cell content={76-100}}},
+    %%every row 3 column 0/.style={postproc cell content/.style={@cell content={101-128}}},
+]{\fileQueryONE}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{Existence[?X]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryTWO,tr20QueryTWO,tr25QueryTWO,tr30QueryTWO,tr40QueryTWO,tr50QueryTWO},	 columns/{alphSizeQueryTWO}/.style={column name={},column type=C},	
+    columns/{tr20QueryTWO}/.style={column name={},column type=C},
+    columns/{tr25QueryTWO}/.style={column name={},column type=C},
+	columns/{tr30QueryTWO}/.style={column name={},column type=C},
+    columns/{tr40QueryTWO}/.style={column name={},column type=C},
+	columns/{tr50QueryTWO}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryTWO}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{Absence[?X]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryTHREE,tr20QueryTHREE,tr25QueryTHREE,tr30QueryTHREE,tr40QueryTHREE,tr50QueryTHREE},	 columns/{alphSizeQueryTHREE}/.style={column name={},column type=C},	
+    columns/{tr20QueryTHREE}/.style={column name={},column type=C},
+    columns/{tr25QueryTHREE}/.style={column name={},column type=C},
+	columns/{tr30QueryTHREE}/.style={column name={},column type=C},
+    columns/{tr40QueryTHREE}/.style={column name={},column type=C},
+	columns/{tr50QueryTHREE}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryTHREE}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{RespondedExistence[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryFOUR,tr20QueryFOUR,tr25QueryFOUR,tr30QueryFOUR,tr40QueryFOUR,tr50QueryFOUR},	 columns/{alphSizeQueryFOUR}/.style={column name={},column type=C},	
+    columns/{tr20QueryFOUR}/.style={column name={},column type=C},
+    columns/{tr25QueryFOUR}/.style={column name={},column type=C},
+	columns/{tr30QueryFOUR}/.style={column name={},column type=C},
+    columns/{tr40QueryFOUR}/.style={column name={},column type=C},
+	columns/{tr50QueryFOUR}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryFOUR}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{AlternateResponse[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryFIVE,tr20QueryFIVE,tr25QueryFIVE,tr30QueryFIVE,tr40QueryFIVE,tr50QueryFIVE},	 columns/{alphSizeQueryFIVE}/.style={column name={},column type=C},	
+    columns/{tr20QueryFIVE}/.style={column name={},column type=C},
+    columns/{tr25QueryFIVE}/.style={column name={},column type=C},
+	columns/{tr30QueryFIVE}/.style={column name={},column type=C},
+    columns/{tr40QueryFIVE}/.style={column name={},column type=C},
+	columns/{tr50QueryFIVE}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryFIVE}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{ChainResponse[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQuerySIX,tr20QuerySIX,tr25QuerySIX,tr30QuerySIX,tr40QuerySIX,tr50QuerySIX},	 columns/{alphSizeQuerySIX}/.style={column name={},column type=C},	
+    columns/{tr20QuerySIX}/.style={column name={},column type=C},
+    columns/{tr25QuerySIX}/.style={column name={},column type=C},
+	columns/{tr30QuerySIX}/.style={column name={},column type=C},
+    columns/{tr40QuerySIX}/.style={column name={},column type=C},
+	columns/{tr50QuerySIX}/.style={column name={},column type=C},
+	%%	
+]{\fileQuerySIX}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{Precedence[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQuerySEVEN,tr20QuerySEVEN,tr25QuerySEVEN,tr30QuerySEVEN,tr40QuerySEVEN,tr50QuerySEVEN},	 columns/{alphSizeQuerySEVEN}/.style={column name={},column type=C},	
+    columns/{tr20QuerySEVEN}/.style={column name={},column type=C},
+    columns/{tr25QuerySEVEN}/.style={column name={},column type=C},
+	columns/{tr30QuerySEVEN}/.style={column name={},column type=C},
+    columns/{tr40QuerySEVEN}/.style={column name={},column type=C},
+	columns/{tr50QuerySEVEN}/.style={column name={},column type=C},
+	%%	
+]{\fileQuerySEVEN}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{AlternatePrecedence[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryEIGHT,tr20QueryEIGHT,tr25QueryEIGHT,tr30QueryEIGHT,tr40QueryEIGHT,tr50QueryEIGHT},	 columns/{alphSizeQueryEIGHT}/.style={column name={},column type=C},	
+    columns/{tr20QueryEIGHT}/.style={column name={},column type=C},
+    columns/{tr25QueryEIGHT}/.style={column name={},column type=C},
+	columns/{tr30QueryEIGHT}/.style={column name={},column type=C},
+    columns/{tr40QueryEIGHT}/.style={column name={},column type=C},
+	columns/{tr50QueryEIGHT}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryEIGHT}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{ChainPrecedence[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryNINE,tr20QueryNINE,tr25QueryNINE,tr30QueryNINE,tr40QueryNINE,tr50QueryNINE},	 columns/{alphSizeQueryNINE}/.style={column name={},column type=C},	
+    columns/{tr20QueryNINE}/.style={column name={},column type=C},
+    columns/{tr25QueryNINE}/.style={column name={},column type=C},
+	columns/{tr30QueryNINE}/.style={column name={},column type=C},
+    columns/{tr40QueryNINE}/.style={column name={},column type=C},
+	columns/{tr50QueryNINE}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryNINE}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{NotRespondedExistence[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryTEN,tr20QueryTEN,tr25QueryTEN,tr30QueryTEN,tr40QueryTEN,tr50QueryTEN},	 columns/{alphSizeQueryTEN}/.style={column name={},column type=C},	
+    columns/{tr20QueryTEN}/.style={column name={},column type=C},
+    columns/{tr25QueryTEN}/.style={column name={},column type=C},
+	columns/{tr30QueryTEN}/.style={column name={},column type=C},
+    columns/{tr40QueryTEN}/.style={column name={},column type=C},
+	columns/{tr50QueryTEN}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryTEN}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{NotResponse[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryELEVEN,tr20QueryELEVEN,tr25QueryELEVEN,tr30QueryELEVEN,tr40QueryELEVEN,tr50QueryELEVEN},	 columns/{alphSizeQueryELEVEN}/.style={column name={},column type=C},	
+    columns/{tr20QueryELEVEN}/.style={column name={},column type=C},
+    columns/{tr25QueryELEVEN}/.style={column name={},column type=C},
+	columns/{tr30QueryELEVEN}/.style={column name={},column type=C},
+    columns/{tr40QueryELEVEN}/.style={column name={},column type=C},
+	columns/{tr50QueryELEVEN}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryELEVEN}
+}
+}
+%%%
+%%%
+\scalebox{1.}[0.75]{
+\resizebox{\columnwidth}{!}{
+\newcolumntype{C}{>{\centering\arraybackslash}p{21mm}}
+\pgfplotstabletypeset[
+font=\scriptsize,
+	every head row/.style={
+    output empty row,
+		after row={%
+            \midrule
+              \multicolumn{1}{c|}{\textbf{\emph{Alphabet Size}} $\downarrow$}
+            & \multicolumn{5}{c|}{\textbf{NotChainResponse[?X,?Y]}}
+            \\\midrule
+		},
+	},
+	%
+	columns={alphSizeQueryTWELVE,tr20QueryTWELVE,tr25QueryTWELVE,tr30QueryTWELVE,tr40QueryTWELVE,tr50QueryTWELVE},	 columns/{alphSizeQueryTWELVE}/.style={column name={},column type=C},	
+    columns/{tr20QueryTWELVE}/.style={column name={},column type=C},
+    columns/{tr25QueryTWELVE}/.style={column name={},column type=C},
+	columns/{tr30QueryTWELVE}/.style={column name={},column type=C},
+    columns/{tr40QueryTWELVE}/.style={column name={},column type=C},
+	columns/{tr50QueryTWELVE}/.style={column name={},column type=C},
+	%%	
+]{\fileQueryTWELVE}
+}
+}
+\caption{Time (in ms.) required for executing queries (without data conditions) of different types on traces of different lengths and with alphabet of possible activities of different sizes.}
+\label{table:exp_results_real}
+\end{center}
+\end{table}

@@ -1,0 +1,73 @@
+%\newcommand{\condec}{Declare\xspace}
+
+\section{Introduction}
+%{\bf {Process Mining, trace logs, events, Problems in PM, Declare, What we do:
+%we compile all problems into Alloy to solve them using SAT, splittare anche in
+%preliminiaries}}
+
+%We use Alloy for multi-perspective DECLARE models:
+%\begin{itemize}
+%	\item Event-log generation
+%	\item Conformance checking
+%	\item Query checking
+%\end{itemize}
+
+
+%Why?
+
+%\begin{itemize}
+%	\item 	 Because there are no other tools available for 1 and 3 (remember
+%we are in the presence of data). For 2, we compare against ProM (DECLARE
+%analyzer)
+%	\item because we want to investigate the effectiveness of SAT solvers for
+%the tasks above
+%\end{itemize}
+
+%- We can use Alloy because we are in a bounded setting (because the prefix is
+%finite and we can perform an abstraction step).
+
+%- We consider only $=$ and $\neq$ (but let see if we can also have total
+%order and/or timestamps, which require sum only, otherwise leave for
+%future work).
+
+%- We have to describe the abstraction step
+
+%- (Vasyl): we can also check infinite traces, i.e., if a model is satisfiable.
+
+%- MAX 15 pages.
+
+%In recent years, declarative languages have been proposed to model business rules and loosely-structured business processes, mediating between support and flexibility. A notable example are constraint-based approaches. These approaches enjoy declarativeness by supporting the modeler in the elicitation of the (minimal) set of behavioral \emph{constraints} that must be respected to correctly execute the process, without stating how the involved stakeholders
+%must behave to satisfy them. Acceptable courses of execution are not explicitly enumerated in a pre-defined way; rather, they are implicitly derived as the execution traces that comply with all the modeled constraints, thus enjoying \emph{flexibility by design}. In this work, we focus on the
+%\condec\ constraint-based framework \cite{Pesic2007:DECLARE}. \condec provides a graphical, declarative language for the
+%specification of activities and constraints: activities model atomic units of work, while constraints impose expectations about the (non) execution of %activities. Constraints range from classical sequence patterns to loose relations, prohibitions and cardinality constraints.
+
+
+In the last years, declarative process modeling languages have been proposed to represent knowledge-intensive business processes \cite{DBLP:journals/jodsn/CiccioM015}. These languages are based on constraint-based modeling approaches able to balance flexibility and support. The modeler can elicit the (minimal) set of \emph{constraints} that must be satisfied to execute the process in the correct way, without explicitly stating how the involved process participants must execute the process to satisfy them. 
+%In particular, the acceptable sequences of activities are not explicitly enumerated; instead, they are implicitly derived as the execution traces that comply with all the modeled constraints. 
+In this work, we focus on the \condec\ constraint-based modeling language \cite{Pesic2007:DECLARE}. \condec provides a graphical language for modeling business processes in terms of activities (atomic units of work) and constraints over them, imposing expectations about their occurrence. Constraints range from standard sequential patterns to loose relations, prohibitions and cardinality constraints.
+
+
+%One of the key advantages of \condec\ is that its semantics can be characterized in different logic-based approaches, enabling a wide
+%range of reasoning and verification capabilities. In its original shape, \condec\ is mainly exploited to constrain control-flow aspects, disregarding other important aspects such as event data and corresponding conditions, as well as temporal constraints, which are all key requirements when dealing with real-world case studies \cite{DBLP:journals/internet/0002SSA12,MMvdA,Ly11}. Previous works have tackled these limitations by incorporating these additional perspectives into the constraint language \emph{MP-Declare} (\emph{Multi-Perspective Declare}) \cite{DBLP:journals/eswa/BurattinMS16}. Based on this semantics, some techniques have been proposed for the analysis of event logs using MP-Declare constraints. Nevertheless, very few techniques have been proposed in the wide spectrum of problems that arise in this context and a theoretically founded, fully integrated tool for Multi-Perspective Declarative Process Mining is still missing.
+
+The semantics of \condec\ has been defined using different logic-based approaches that enable a wide range of reasoning and verification capabilities. Originally, \condec\ was meant to constrain control-flow aspects, without considering other crucial aspects that come into play when modeling a business process such as event data and corresponding conditions, as well as temporal constraints \cite{DBLP:journals/internet/0002SSA12,MMvdA,Ly11}. Previous works have tackled these limitations by incorporating these additional perspectives into the declarative process modeling language \emph{MP-Declare} (\emph{Multi-Perspective Declare}) \cite{DBLP:journals/eswa/BurattinMS16}. Based on this semantics, some techniques have been proposed for the analysis of event logs using MP-Declare constraints. Nevertheless, very few techniques have been proposed in the wide spectrum of problems that arise in this context and a theoretically founded, fully integrated tool for Multi-Perspective Declarative Process Mining is still missing.
+
+
+In this paper, we aim at closing this gap by considering SAT as a solving technology for a number of problems in Multi-Perspective Declarative Process Mining thus showing the potential of this technology when solving Declarative Process Mining problems involving multi-perspective process specifications.
+%We show that these problems can be effectively solved via reduction to SAT.
+To do so, we first express each problem as a suitable FO theory whose bounded models represent solutions to the problem, and then find a bounded model of such theory by compilation into SAT. This is actually done by resorting to the Alloy tool.
+%for finding bounded models of FO theories by compilation into SAT.
+Notably, the Alloy output, i.e., the SAT instance, can be provided as input to any SAT solver, thus making any performance optimization in SAT directly available to Declarative Process Mining.
+%By using Alloy we obtain a full-fledged tool that can solve all the existing problems arising in multi-perspective Declarative Process Mining.
+At the end of the paper, we report an experimental evaluation to test the feasibility of the approach.
+%we aim at closing this gap by proposing a multi-perspective approach based on Declare that allows for defining multi-perspective constraints jointly considering data, temporal, and control-flow perspectives. To this aim,
+%we formally define Multi-Perspective Declare (MP-Declare), an augmented version of Declare that, being based on Metric First-Order Linear Temporal Logic semantics, allows for the definition of activation, correlation, and time conditions to build constraints over traces.
+
+%A nice feature of MP-Declare is that, by construction, it allows the user to efficiently perform conformance checking over event logs.
+%In fact, we show that it is possible to define a conformance checking algorithmic framework for MP-Declare that is linear in the number of traces, constraints, and in the number of events of each trace.
+%Conformance checking for a specific MP-Declare template is obtained via definition of  template-dependent procedures within the framework, whose time complexity depends on the actual template. Overall, however, the time complexity is upper bounded in the worst case by a quadratic function.
+
+%We assess the validity of the proposed approach both on artificial and real-life event logs. Controlled artificial data, involving logs containing up to 5 million events, are used to prove the scalability of the proposed approach, while real-life event logs generated by three real business processes are used to demonstrate the expressivity and flexibility of constraints defined via MP-Declare.
+
+
+%The rest of the paper is structured as follows. In Section \ref{sec:related}, we discuss the related work. Section \ref{sec:preliminaries} provides some background notions needed to understand the main contribution of the paper. In Section \ref{sec:semantics}, we introduce the semantics of Multi-Perspective Declare based on Metric First-Order Linear Temporal Logic. In Section \ref{sec:algorithms}, we discuss the proposed conformance checking algorithms. Section \ref{sec:benchmarks} describes the implementation of the approach and provides a benchmark analysis. Section \ref{sec:casestudy} discusses three case studies on real-life datasets. Section~\ref{sec:conclusion} concludes the paper and spells out directions for future work.

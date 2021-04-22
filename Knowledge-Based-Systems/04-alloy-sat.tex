@@ -1,0 +1,858 @@
+\section{Alloy for Declarative Process Mining}
+
+The problems presented in the previous section can be cast into
+various problems
+typical of databases. This can be done because in all such problems, we deal
+with a finite interpretation domain.
+As described above, solving these
+problems requires in practice either constructing a set of models
+or building
+a relation that satisfies certain requirements.
+%%
+In this work, we explore the use of Alloy~\cite{alloy} as a tool for
+these tasks.
+
+Alloy is a tool for the construction of models of FO theories over
+finite interpretation domains. In its essence, the tool takes
+as input a FO theory and an interpretation domain (or a bound
+on the size of the interpretation domain) and returns,
+if any, a model of the input theory.
+
+Interestingly, Alloy builds the models by compiling the problem
+into SAT, using propositions to represent FO atoms built from
+predicate symbols and the finitely many objects in the interpretation
+domain. We are not interested here in the compilation step,
+but in: \myi how we can cast our problems
+into that of finding a model for a FO theory; and \myii how effective
+the (SAT-based) solution approach of Alloy is in solving the
+problems of interest. In this section,
+we discuss the former point, while, in the section
+about experiments, we deal with the latter.
+
+\subsection{Generation of Event Logs}
+Generation of event logs is possibly the simplest
+problem to solve with Alloy. We simply take $\Gamma$ and the
+conjunction of the constraints to satisfy, say $\varphi$, and
+ask Alloy to search for the models of $\Gamma\cup\set{\varphi}$,
+for a given (finite) $\Delta$.
+Observe that, if needed, we can add, on top of the input
+theory, additional constraints, as long as these are
+consistent with $\Gamma\cup\set{\varphi}$.
+For instance, we may require that the set of
+attribute names be restricted to a certain desired set:
+$$\forall i,a,v.AttV(i,a,v)\rightarrow
+	a=\cst v\lor
+	a=\cst w\lor
+	a=\cst y\lor
+	a=\cst s,$$
+analogously for attribute values:
+$$\forall i,a,v.AttV(i,a,v)\rightarrow
+	v=\cst a\lor
+	v=\cst b\lor
+	v=\cst c\lor
+	v=\cst d,$$
+or even that certain attributes may take only certain values:
+$$\forall i,v.AttV(i,\cst v,v)\rightarrow
+	v=\cst a\lor
+	v=\cst d.$$
+	
+To obtain many traces, we ask Alloy, once returned a model,
+to build one more, until enough traces have been
+produced or no more solutions are available.
+Notice that we can incrementally increase the size of the
+interpretation domain by adding new constants to obtain
+additional traces.
+
+
+% % % % \subsection{Preliminaries on First-order Logic}
+% % % % We start by briefly recalling
+% % % % standard preliminary notions about first-order logic.
+% % % % %%
+% % % % A first-order (FO) \emph{vocabulary} $\sigma$ consists of sets of
+% % % % \emph{constant
+% % % % symbols} $c_1,\ldots,c_n$, \emph{predicate symbols} $P_1,\ldots,P_m$ and
+% % % % \emph{function symbols} $f_1,\ldots,f_q$, where each predicate or function
+% % % % symbol has a respective (finite) arity.
+% % % % %%
+% % % % An \emph{interpretation} $\I$ of a FO vocabulary $\sigma$ over a
+% % % % (possibly infinite) \emph{universe} $U$ is a pair
+% % % % $I=\tup{U,\cdot^I}$, where $\cdot^\I$ is the \emph{interpretation function}
+% % % % of $\I$, i.e., a function
+% % % % associating:
+% % % % 	\begin{itemize}
+% % % % 		\item each constant $c$ with an object $c^\I\in U$;
+% % % % 		\item each predicate symbol $P$ of arity $a$ with a relation
+% % % % $P^\I\subseteq U^a$;
+% % % % 		\item each function symbol $f$ of arity $a$ with a mapping
+% % % % $f^\I:U^a\rightarrow U$.
+% % % % 	\end{itemize}
+% % % % %%
+% % % % For our purposes, we can assume that constants
+% % % % are always interpreted as themselves, i.e., that for any interpretation $\I$,
+% % % % it is the case that $c^\I=c$ (this is a common assumption in many situations,
+% % % % e.g., in database theory~\cite{vianu-book}). Obviously, this implies that all
+% % % % (and only) constant symbols are included in $U$.
+% % % %
+% % % % Given a FO vocabulary $\sigma$ and an infinite (countable) set $V$ of
+% % % % variable symbols, formulas $\varphi$ of FOL over $\sigma$
+% % % % respect the following syntax:
+% % % % $$\varphi = P(\vec t)\mid \lnot \varphi\mid \varphi\land\varphi\mid \exists
+% % % % x.\varphi, \mbox{ where:}$$
+% % % % \begin{itemize}
+% % % %  \item $P$ is a predicate symbol from $\sigma$;
+% % % %  \item $\vec t$ is a tuple
+% % % % 	$\tup{t_1,\ldots,t_a}$, with $a$ the arity of $P$,
+% % % % 	and each $t_i$ a \emph{term} from $\sigma$, i.e., a variable or a constant
+% % % % symbol from $\sigma$, or a \emph{function term}, i.e., an expression of the
+% % % % form $f(\vec t')$, with $f$ a function symbol from $\sigma$ and $\vec t'$ a
+% % % % tuple of terms
+% % % % from $\sigma$, of size equal to the arity of $f$.
+% % % % \end{itemize}
+% % % % %%
+% % % % As standard, we define the following abbreviations:
+% % % % $\varphi_1\lor \varphi_2\doteq \lnot(\lnot\varphi_1\land\lnot\varphi_2)$,
+% % % % $\forall x.\varphi\doteq\lnot\exists x.\lnot\varphi$,
+% % % % $\varphi_1 \rightarrow \varphi_2\doteq \lnot\varphi_1 \lor \varphi_2$,
+% % % % and $\varphi_1 \leftrightarrow \varphi_2\doteq (\varphi_1 \rightarrow
+% % % % \varphi_2) \land (\varphi_2 \rightarrow \varphi_1)$.
+% % % % %%
+% % % % The variable $x$ in $\exists x.\varphi$ (resp.~$\forall x.\varphi$) is
+% % % % an (existentially, resp.~universally) quantified variable.
+% % % % Variables in a FO
+% % % % formula do not have to be quantified, in which case they are called
+% % % % \emph{free variables}.
+% % % % Formulas containing only quantified variables are called \emph{sentences}.
+% % % % %%
+% % % %
+% % % % FO formulas are interpreted over FO interpretations and
+% % % % \emph{variable assignments}, i.e., total mappings $\nu:V\mapsto U$,
+% % % % for $U$ the universe of the interpretation in question.
+% % % % Formula interpretations require interpreting their terms first.
+% % % % Given a FO interpretation $\I=\tup{U,\cdot^\I}$ of $\sigma$ and a term $t$
+% % % % over $\sigma$, the
+% % % % interpretation of $t$ under $\nu$ and $\I$ is the object
+% % % % $t^\I_\nu\in U$ such that:
+% % % % \begin{itemize}
+% % % %  \item $t^\I_\nu = \nu(t)$, if $t$ is a variable symbol;
+% % % %  \item $t^\I_\nu = c^\I(=c)$, if $t$ is a constant symbol;
+% % % %  \item $t^\I_\nu = f^\I({t_1}^\I_\nu,\ldots,{t_a}^\I_\nu)$, for $a$
+% % % % the arity of $f$, if $t=f(t_1,\ldots,t_a)$.
+% % % % \end{itemize}
+% % % % %%
+% % % %
+% % % % A FO interpretation
+% % % % $\I$ is said to \emph{satisfy}
+% % % % a FO formula $\varphi$ under assignment $\nu$,
+% % % % written $\I, \nu\models\varphi$, iff either:
+% % % % %%
+% % % % \begin{itemize}
+% % % % 	\item $\varphi=P(t_1,\ldots,t_a)$ and
+% % % % 	$\tup{{t_1}^\I_\nu,\ldots,{t_a}^\I_\nu}\in P^\I$;
+% % % % 	\item $\varphi=\lnot \phi$ and $\I,\nu\not\models\phi$;
+% % % % 	\item $\varphi=\phi_1\land \phi_2$ and $\I,\nu\models \phi_i$, for $i=1,2$;
+% % % % 	\item $\varphi=\exists x.\phi$ and there exists $u\in U$ such that
+% % % % $\I,\nu'\models \phi$, with $\nu'(x)=u$ and $\nu'(v)=\nu(v)$, for $v\neq x$.
+% % % % \end{itemize}
+% % % % %%
+% % % % % % Notice that, in order to check satisfaction of $\varphi$, all
+% % % % %%terms occurring
+% % % % % % in it must be replaced by their interpretation.
+% % % % % %
+% % % % Finally, an interpretation $\I$ \emph{satisfies}
+% % % % a formula $\varphi$, written $\I\models \varphi$, iff $\I,\nu\models\varphi$
+% % % % for all assignments $\nu$. This notion is used, in particular, when $\varphi$
+% % % % is a sentence.
+% % % %
+% % % % A \emph{FO theory} $\Gamma$ is a possibly infinite set of FO sentences. Here,
+% % % % we focus on finite theories.
+% % % % An interpretation is said to
+% % % % satisfy a theory $\Gamma$ if $\I\models\varphi$ for all $\varphi\in\Gamma$.
+% % % % When
+% % % % this is the case, $\I$ is said to be a \emph{model} of $\Gamma$.
+% % % % %%
+% % % % It is well known that checking existence of a model of a theory is
+% % % % an undecidable problem, even if one restricts to \emph{finite} models only,
+% % % % i.e., models whose universe $U$ is finite (see, e.g., \cite{FO-book}). The
+% % % % problem is instead decidable if one considers only bounded models, i.e., with
+% % % % $U$ of cardinality no larger than a fixed bound.In this case, which is the one
+% % % % of interest in this work, the model can be effectively computed~\cite{}.
+% % % %
+% % % % One possible approach to construct (bounded) models of (finite)
+% % % % theories is based on compilation into SAT. The idea is to compile, depending
+% % % % also on the bound $b$, the theory into a boolean formula $\phi$ such that
+% % % % $\phi$ is satisfied iff there exists a model of the theory with a universe
+% % % % bounded in size by $b$.
+% % % % This approach, the one adopted by
+% % % % the software analysis tool Alloy~\cite{}, has the great advantage of benefiting
+% % % % directly from the continuous improvements obtained by
+% % % % SAT solvers, as well as offering to users, at essentially no additional
+% % % % cost, the whole set of SAT solvers available to date.
+% % % %
+% % % % Here, we rely on Alloy for this reason, i.e., to check the
+% % % % effectiveness of SAT technology as a way to address problems typical in Process
+% % % % Mining. We stress that we are not interested in the compilation process itself,
+% % % % but simply as a way to compile our problems into SAT. Thus, we will use Alloy as
+% % % % a black-box tool, without entering the details of the compilation process. We
+% % % % refer the interested reader to~\cite{JacksonSS00} and to the numerous papers on
+% % % % the topic, accessible from the Alloy website[\cite{}, footnote?,
+% % % % already cited?].
+% % % %
+% % % % \subsection{Modeling Log Traces as FO Theories}
+% % % %
+% % % % In this section, we explain how FO theories can be used to capture log
+% % % % traces. For a given integer $b$, we represent a trace of size $b$ as an ordered
+% % % % set of $b$ events.
+% % % % Let $\{a_1,\ldots,a_p\}$ be the set of possible activities;
+% % % % assume that activity $a_i$ has $q_i$ attributes
+% % % % $att_{ij}$ ($j=1,\ldots,q_i$), each with possible values from
+% % % % a domain $D_{ij}=\{d_{ij}^1,\ldots,d_{ij}^{r_{ij}}\}$.
+% % % % %%
+% % % % Then, the vocabulary $\sigma$ includes:
+% % % % \begin{itemize}
+% % % % 	\item $b$ constants $\mathtt{e}_1,\ldots,\mathtt{e}_b$, representing the
+% % % % events in the trace;
+% % % % 	\item $p$ constants $\mathtt{a}_1,\ldots,\mathtt{a}_p$, representing the
+% % % % possible activities;
+% % % % 	\item constants
+% % % % $\mathtt{att}_{11},\ldots,\mathtt{att}_{1q_1}\ldots,\mathtt{att}_{p1},\ldots,
+% % % % \mathtt{att}_ {pq_p}$, modeling the activity attributes;
+% % % % 	\item constants
+% % % % $\mathtt{d}_{11}^1,\ldots,\mathtt{d}_{11}^{r_{11}},\ldots,\mathtt{d}_{pq_p}^1,
+% % % % \ldots,\mathtt{d}_{ pq_p}^{r_{ pq_p}}$
+% % % % representing values in the attribute domains;
+% % % % 	\item unary predicate symbols $E$(vents), $A$(ctivities), $Att$(tributes),
+% % % % and $D_{11},\ldots,D_{1q_1}\ldots,D_{p1},\ldots{D_{p_{q_p}}}$, one per
+% % % % attribute;	
+% % % % \item binary predicate symbols
+% % % % $hasAtt$(ribute), $N$(ext) and $Aft$(er);
+% % % % \item a unary function symbol $act$;
+% % % % \item a binary function symbol $att$;
+% % % % \end{itemize}
+% % % % %%
+% % % % With a slight abuse of notation we use
+% % % % the same names for activities, events, etc., and their corresponding predicate
+% % % % symbols. However, we use a different $\mathtt{font}$ for constants,
+% % % % to distinguish them from variables.
+% % % %
+% % % % Predicate symbol $E$ is intended to capture trace events, $A$ activities, $Att$
+% % % % attributes, and $D_{ij}$ the set of possible values that can be assigned to
+% % % % attribute $att_{ij}$;
+% % % % the relation symbol $hasAtt$(attribute) models the relationship between
+% % % % activities and attributes;
+% % % % the relation symbols $N$ and
+% % % % $Aft$ model the ordering of events;
+% % % % the unary function symbol $act$ represents the association between events and
+% % % % activities; finally, the binary function symbol $att$ is used to model the
+% % % % value assignment to attributes.
+% % % %
+% % % % We can now formally define the theory $\Gamma$. This is
+% % % % obtained as the union of the sentences described below.
+% % % % %%
+% % % % First, to guarantee that $E$ contains all and only the constants
+% % % % $\mathtt{e}_i$, we include in $\Gamma$ the following sentence:
+% % % % %%
+% % % % \begin{equation}\label{eq1}
+% % % % \big(\bigwedge_{i=1}^b E(\mathtt{e}_i)\big)
+% % % % \land
+% % % % \big(\forall
+% % % % x.E(x)\rightarrow \bigvee_{i=1}^b x=\mathtt{e}_i\big)
+% % % % \end{equation}
+% % % % %%
+% % % % We do the same with $A$, $Att$ and each $D_{ij}$, thus imposing that $A$
+% % % % contains
+% % % % exactly the activities $\mathtt{a}_1,\ldots,\mathtt{a}_p$,
+% % % % that $Att$ contains exactly the attributes
+% % % % $\mathtt{att}_{11},\ldots,\mathtt{att}_{1q_1},\ldots,\mathtt{att}_{p1},\ldots,
+% % % % \mathtt{att}_{pq_p}$ , and that each $D_{ij}$ contains exactly
+% % % % the values $\mathtt{d}_{ij}^1,\ldots,\mathtt{d}_{ij}^{r_{ij}}$.
+% % % %
+% % % % We impose also that the interpretation domain contains exactly the constants
+% % % % mentioned so far:
+% % % % \begin{equation}\label{eq2}
+% % % % \forall x. E(x)\lor A(x)\lor Att(x)\lor D_{11}(x)\lor\cdots\lor
+% % % % D_{pq_p}(x)
+% % % % \end{equation}
+% % % %
+% % % %
+% % % % To express that each activity $\mathtt{a}_i$ has (exactly) attributes
+% % % % $\mathtt{att}_{i1},\ldots,\mathtt{att}_{iq_i}$, we write the following:
+% % % % \begin{equation}\label{eq3}
+% % % % 	\bigwedge_{i=1}^p
+% % % % 		\forall y.hasAtt(\mathtt{a}_i,y)\leftrightarrow
+% % % % 		\bigvee_{j=1}^{q_i} (y=\mathtt{att}_{ij})	
+% % % % \end{equation}
+% % % %
+% % % % Then, through $N$, we define an arbitrary order on the events. This can be
+% % % % arbitrary because events are essentially placeholders whose identity does not
+% % % % carry any relevant information; what matters, instead, is set of activities, in
+% % % % the trace, together with their respective attribute
+% % % % assignments, and their mutual order.
+% % % % With the following sentence, we constrain $N$ to represent an ``immediate
+% % % % successor'' relation:
+% % % % \begin{equation}\label{eq4}
+% % % % \forall e,e'.N(e,e')\leftrightarrow
+% % % % 	((e=\mathtt{e}_1\land
+% % % % e'=\mathtt{e}_2)\lor\cdots\lor(e=\mathtt{e}_{b-1}\land e'=\mathtt{e}_{b}))
+% % % % \end{equation}
+% % % % That is, we set the successor of event $\mathtt{e}_i$ as $\mathtt{e}_{i+1}$.
+% % % %
+% % % % Relation $Aft$ models
+% % % % that an event $e'$ occurs in the future wrt an event $e$:
+% % % % \begin{equation}\label{eq5}
+% % % % \forall
+% % % % e,e'.Aft(e,e')\leftrightarrow\bigvee_{i=1}^{b-1}(e=\mathtt{e}_i\land\bigvee_{
+% % % % j=i+1 } ^ { b-1 } e'=\mathtt{e}_j)
+% % % % \end{equation}
+% % % % This sentence says that for any two events $e_i$ and $e_j$, it hods that
+% % % % $Aft(\mathtt{e}_i,\mathtt{e}_j$) if and only if $j>i$. Notice this is
+% % % % consistent with the
+% % % % ordering defined by $N$.
+% % % %
+% % % % Then, we require that every event $e$ has one activity associated through $act$:
+% % % % \begin{equation}\label{eq6}
+% % % %  \forall e.E(e)\rightarrow A(act(e))
+% % % % \end{equation}
+% % % %
+% % % % Finally, we impose that every activity associated with an event has all of its
+% % % % attributes valuated with some value coming from the appropriate
+% % % % domain:
+% % % % \begin{equation}\label{eq7}
+% % % % \begin{array}{l}
+% % % % 	\forall e,a,x,d.(E(e)\land a=act(e)\land
+% % % % hasAtt(a,x)\land d=att(e,x))\rightarrow\\
+% % % % \phantom{xxxxxxxxxxxxxxxxxxxxxxxxxx}\bigvee_{i=1}^p a=\mathtt{a}_i\land
+% % % % (\bigvee_{j=1}^{q_p} (x=\mathtt{att}_{ij} \land D_{ij}(d)))
+% % % % \end{array}
+% % % % \end{equation}
+% % % %
+% % % % It can be easily shown that any trace of size $b$ (over the above mentioned
+% % % % activities, with corresponding attributes and respective domains)
+% % % % can be captured by a FO interpretation of the theory $\Gamma$ defined by the
+% % % % above sentences. Viceversa, any model of $\Gamma$ captures a trace as above.
+% % % %
+% % % % \begin{example}\label{ex1}
+% % % % Assume the following possible activities:
+% % % %  \begin{itemize}
+% % % %   \item $A_1$, with attribute $v$, taking values
+% % % % from $D_{11}=\{a,b\}$;
+% % % %   \item $A_2$, with attributes $w$ and
+% % % % $y$, taking values
+% % % % from, respectively, $D_{21}=\{b,d\}$
+% % % % and
+% % % % $D_{22}=\{b,d\}$;
+% % % %   \item $A_3$, with attribute $s$, taking values from
+% % % % $D_{31}=\{c,d,e\}$.
+% % % %  \end{itemize}
+% % % % %%
+% % % % For $b=4$ the length of a trace, the vocabulary $\sigma$
+% % % % includes (remember we use the same names for events, activities, etc. and for
+% % % % their counterparts in $\sigma$):
+% % % % \begin{itemize}
+% % % % 	\item predicate symbols:
+% % % % 		$E$, $A$, $Att$, $D_{11}$, $D_{21}$, $D_{22}$, $D_{31}$;
+% % % % 	\item binary relation symbols
+% % % % 		$hasAtt, N, Aft$;
+% % % % 	\item constants:
+% % % % 		$\mathtt{e}_1,\mathtt{e}_2,\mathtt{e}_3,\mathtt{e}_4$,
+% % % % 		$\mathtt{A}_1,\mathtt{A}_2,\mathtt{A}_3$,
+% % % % 		$\mathtt{v},\mathtt{w},\mathtt{y},\mathtt{s}$,
+% % % % 		$\mathtt{a},\mathtt{b},\mathtt{c},\mathtt{d},\mathtt{e}$;
+% % % % 	\item function symbols:
+% % % % 		$act$, $att$.
+% % % % \end{itemize}
+% % % % %%
+% % % % $\Gamma$ is obtained by instantiating sentences~\ref{eq1}
+% % % % to~\ref{eq7} according to the assignments above.
+% % % % For instance, for $D_{21}$, sentence~(\ref{eq1}) is as follows:
+% % % % %%
+% % % % $$D_{21}(\mathtt{b})\land D_{21}(\mathtt{d})\land \big(\forall
+% % % % x.D_{21}(x)\rightarrow (x=\mathtt{b}\lor
+% % % % x=\mathtt{d})\big)$$
+% % % % %%
+% % % % Sentence~(\ref{eq2}) remains the same, while sentence~(\ref{eq3}) is
+% % % % instantiated
+% % % % as follows:
+% % % % $$
+% % % % 	\begin{array}{c}
+% % % % 	(\forall y.hasAtt(\mathtt{A}_1,y)\leftrightarrow (y=\mathtt{v}))\land\\
+% % % % 	(\forall y.hasAtt(\mathtt{A}_2,y)\leftrightarrow
+% % % % (y=\mathtt{w})\lor(y=\mathtt{y}))\land\\	
+% % % % 	(\forall y.hasAtt(\mathtt{A}_3,y)\leftrightarrow (y=\mathtt{s}))
+% % % % 	\end{array}
+% % % % $$
+% % % % %%
+% % % % As to sentence~(\ref{eq4}), we have:
+% % % % $$
+% % % % \forall e,e'.N(e,e')\leftrightarrow
+% % % % 	(
+% % % % 		(e=\mathtt{e}_1\land
+% % % % 		e'=\mathtt{e}_2)\lor
+% % % % 		(e=\mathtt{e}_2\land
+% % % % 		e'=\mathtt{e}_3)\lor
+% % % % 		(e=\mathtt{e}_3\land
+% % % % 		e'=\mathtt{e}_4)
+% % % % )
+% % % % $$
+% % % % %%
+% % % % Sentence~(\ref{eq5}) becomes:
+% % % % $$
+% % % % \begin{array}{ll}
+% % % % \forall e,e'.Aft(e,e')\leftrightarrow(&
+% % % % 	(e=\mathtt{e}_1\land (e'=\mathtt{e}_2\lor e'=\mathtt{e}_3 \lor
+% % % % e'=\mathtt{e}_4))\lor  \\ &
+% % % % 	(e=\mathtt{e}_2\land (e'=\mathtt{e}_3 \lor
+% % % % e'=\mathtt{e}_4))\lor  \\ &
+% % % % 	(e=\mathtt{e}_3\land e'=\mathtt{e}_4))
+% % % % \end{array}
+% % % % $$
+% % % % %%
+% % % % Sentence~(\ref{eq6}) remains unchanged, while sentence~(\ref{eq7}) becomes as
+% % % % follows:
+% % % % $$
+% % % % \begin{array}{l}
+% % % % \forall e,a,x,d.(E(e)\land a=act(e)\land
+% % % % hasAtt(a,x)\land d=att(e,x))\rightarrow (\\
+% % % % \phantom{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+% % % % (a=\mathtt{A}_1\land (x=\mathtt{v}\land D_{11}(d)))\lor\\
+% % % % \phantom{xxxxxxxxxxxxxxxxxx}
+% % % % (a=\mathtt{A}_2\land ((x=\mathtt{w}\land
+% % % % D_{21}(d))\lor(x=\mathtt{y}\land D_{22}(d))))\lor\\
+% % % % \phantom{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+% % % % (a=\mathtt{A}_3\land (x=\mathtt{s}\land D_{31}(d))))
+% % % % \end{array}
+% % % % $$
+% % % %
+% % % % Now, consider the trace:
+% % % % $$A_1[v=a]A_2[w=b,y=d]A_3[s=c]A_3[s=d]$$
+% % % % %%
+% % % % The model of $\Gamma$ corresponding to this trace is the interpretation $\I$
+% % % % such that:
+% % % % \begin{itemize}
+% % % %  \item $E^\I=\{\mathtt{e}_1,\mathtt{e}_2,\mathtt{e}_3,\mathtt{e}_4\}$;
+% % % %  \item $A^\I=\{\mathtt{A}_1,\mathtt{A}_2,\mathtt{A}_3\}$;
+% % % %  \item $Att^\I=\{\mathtt{v},\mathtt{w},\mathtt{y},\mathtt{s}\}$;
+% % % %  \item $D_{11}^\I=\{\mathtt{a},\mathtt{b}\}$,
+% % % % 	$D_{21}^\I=D_{22}^\I=\{\mathtt{b},\mathtt{d}\}$,
+% % % % 	$D_{31}^\I=\{\mathtt{c},\mathtt{d},\mathtt{e}\}$;
+% % % %  \item
+% % % % $hasAtt^\I=\{\tup{\mathtt{A}_1,\mathtt{v}},
+% % % % \tup{\mathtt{A}_2,\mathtt{w}},\tup{\mathtt{A}_2,\mathtt{y}},\tup{\mathtt{A}_3,
+% % % % \mathtt{s}}\}$
+% % % % \item $N^\I=\{\tup{\mathtt{e}_1,\mathtt{e}_2},
+% % % % \tup{\mathtt{e}_2,\mathtt{e}_3},
+% % % % \tup{\mathtt{e}_3,\mathtt{e}_4}\}$;
+% % % % \item $Aft^I=\{
+% % % % \tup{\mathtt{e}_1,\mathtt{e}_2},
+% % % % \tup{\mathtt{e}_1,\mathtt{e}_3},
+% % % % \tup{\mathtt{e}_1,\mathtt{e}_4},
+% % % % \tup{\mathtt{e}_2,\mathtt{e}_3},
+% % % % \tup{\mathtt{e}_2,\mathtt{e}_4},
+% % % % \tup{\mathtt{e}_3,\mathtt{e}_4}
+% % % % \}$
+% % % % \item $act^I=\{
+% % % % \mathtt{e}_1\mapsto\mathtt{A_1},
+% % % % \mathtt{e}_2\mapsto\mathtt{A_2},
+% % % % \mathtt{e}_3\mapsto\mathtt{A_3},
+% % % % \mathtt{e}_4\mapsto\mathtt{A_3},
+% % % % \cdots
+% % % % \}$, where $\cdots$ denotes that the other assignments can be any (as not
+% % % % relevant);
+% % % % \item $att^I=\{
+% % % % \tup{\mathtt{e}_1,\mathtt{v}}\mapsto\mathtt{a},
+% % % % \tup{\mathtt{e}_2,\mathtt{w}}\mapsto\mathtt{b},
+% % % % \tup{\mathtt{e}_2,\mathtt{y}}\mapsto\mathtt{d},
+% % % % \tup{\mathtt{e}_3,\mathtt{s}}\mapsto\mathtt{c},
+% % % % \tup{\mathtt{e}_4,\mathtt{s}}\mapsto\mathtt{d},\cdots
+% % % % \}$ (again, $\cdots$ denote irrelevant assignments);
+% % % % \end{itemize}
+% % % % %%
+% % % % For any other trace of length $4$, a similar interpretation obviously exists.
+% % % % \end{example}
+% % % %
+% % % % It is immediate to generalize Example~\ref{ex1} to the case of any $b$ and
+% % % % trace of length $b$, thus obtaining that any trace of length be can be captured
+% % % % by an interpretation of a theory $\Gamma$ as above.
+% % % %
+% % % % Also the converse can be shown, i.e., that, for given $b$, any interpretation
+% % % % of a theory $\Gamma$ as above represents a trace.
+% % % % Indeed, for fixed $b$, all the models of $\Gamma$ match except
+% % % % for the interpretations $act^\I$ and $att^\I$, i.e., for the activities
+% % % % associated with each event and
+% % % % the corresponding assignment to each of their attributes.
+% % % % This is a direct consequence of sentences~\ref{eq1} to~\ref{eq5}. However,
+% % % % sentences~\ref{eq6} and~\ref{eq7} respectively prescribe that: exactly one
+% % % % activity is assigned to each event and all the attributes of an activity
+% % % % assigned to some event are assigned a value from their respective domain.
+% % % % Based on this, it can be easily seen that any interpretation of $\Gamma$ is,
+% % % % essentially, a trace.
+% % % %
+% % % % \subsection{MP Declare Templates}
+% % % % On top of $\Gamma$, we can specify additional requirements, so as to constrain
+% % % % the traces represented by its models to satisfy certain properties. In
+% % % % particular, here, we are interested in capturing Declare templates...
+% % % %
+% % % % {\bf [FP: Si possono prendere da Burattin et al.? Magri possiamo dire che sono
+% % % % essenzialmente analoghi e dare un paio di esempi (tipo init e response con
+% % % % dati)]}
+% % % %
+% % % % \subsection{Introducing Numeric Values}
+% % % % In many cases, we need to deal with numeric attribute values. For instance,
+% % % % one can be interested in guaranteeing that the value of a certain attribute
+% % % % lies below a fixed threshold, or that it equals a certain value.These
+% % % % comparisons may occur within the Declare constraints.
+% % % %
+% % % % While, in
+% % % % general, comparisons can be more involved, such as checking whether a value
+% % % % is less than another value plus a certain quantity, here we address the
+% % % % basic problem of comparing attributes against constant values. Specifically, we
+% % % % assume that some attributes are \emph{integer}, i.e., they can be assigned
+% % % % integer values and that the only allowed comparisons are of the form
+% % % % $attr=num$, $attr\neq num$, $attr\leq num$, $attr<num$, $attr\geq num$, and
+% % % % $attr>num$, with $attr$ an attribute and $num$ a (numeric) constant.
+% % % %
+% % % % Treating numeric values in FOL is in general problematic, as there is no way to
+% % % % control the cardinality of infinite sets. In this respect, it is well known,
+% % % % e.g., that one cannot write a theory whose models are (isomorphic to)
+% % % % structures such as the integers (in fact, one cannot even express that the
+% % % % universe be numerable). To overcome this, a series of frameworks
+% % % % have been introduced, see, e.g., the framework of \emph{embedded finite
+% % % % models}~\cite{libkin}.
+% % % % %%
+% % % % In
+% % % % our case, the problem is even more basic: since we deal with
+% % % % bounded sets only (in order to compile the theory into SAT),
+% % % % including (no matter how) the integers in our theory is out of question.
+% % % %
+% % % % Nonetheless, if we allow only the comparisons mentioned above (extending to
+% % % % more general conditions is left for future work) we can still reason about
+% % % % numeric values.
+% % % % The crucial observation is that in a Declare model, being finite,
+% % % % there may occur only a finite number of numeric comparisons, thus only a finite
+% % % % number of numeric values can be mentioned. Starting from this, we can
+% % % % introduce, for each comparison, a new predicate symbol modeling whether
+% % % % the comparison is satisfied or not by the involved attribute, and then use
+% % % % this to force, through suitable sentences, its satisfaction.
+% % % %
+% % % % Assume for instance that the Declare model includes the comparison
+% % % % $att_{ij}\leq 10$, with attribute $att_{ij}$ and constant $10$. To deal
+% % % % with this, we proceed as follows:
+% % % % \begin{itemize}
+% % % %  \item We include in $\sigma$ a new unary predicate $lt10$.
+% % % %  \item As constants associated with $att_{ij}$, we include in $\sigma$
+% % % % only $\mathtt{d}_{ij}^1$ and $\mathtt{d}_{ij}^2$ and constrain,
+% % % % through sentences~(\ref{eq1}), $D_{ij}$ to contain exactly
+% % % % $\mathtt{d}_{ij}^1$ and $\mathtt{d}_{ij}^2$.
+% % % %  \item We specify, through one of the sentences~(\ref{eq1}), that $lt10$
+% % % % contains exactly $\mathtt{d}_{ij}^1$ (and not $d_{ij}^2$). This is intended to
+% % % % model that $\mathtt{d}_{ij}^1$ is a numeric value less or equal than 10, while
+% % % % $\mathtt{d}_{ij}^2$ is not.
+% % % % \item Finally, whenever we need to state that the assignment of
+% % % % $\mathtt{att}_{ij}$ at a given event $e$ must be less or equal than $10$, we
+% % % % write $lt10(att(e,\mathtt{att}_{ij}))$.
+% % % % \end{itemize}
+% % % % Then, once the model is obtained, the desired trace can be obtained by
+% % % % simply replacing every occurrence of $\mathtt{d}_{ij}^1$ with any value $v\leq
+% % % % 10$ and every occurrence of $\mathtt{d}_{ij}^2$ with any value $v> 10$.
+% % % %
+% % % % For instance, if the obtained model $\I$ corresponds to trace:
+% % % % $$\tau=A_1[v=\mathtt{d}_{11}^1]A_2[w=b,y=d]A_3[s=c]A_3[s=d]$$
+% % % % and in the model we have that
+% % % % $lt10^\I=\{\mathtt{d}_{11}^1\}$, then any trace obtained from $\tau$ by
+% % % % replacing $\mathtt{d}_{11}^1$ with a value less or equal than 10 is a trace
+% % % % that satisfies the desired requirement. In this sense, the constant
+% % % % $\mathtt{d}_{11}^1$ is an \emph{abstraction} of the interval $(-\infty, 10]$
+% % % % and $\mathtt{d}_{11}^2$ is an abstraction for $(10, +\infty]$
+% % % %
+% % % % The approach can be generalized to the case of multiple conditions.
+% % % % To see how, assume there are two conditions involving overlapping intervals,
+% % % % e.g., $att_{ij}\leq 10$ and $att_{lk}\leq 8$. In this case, we need to provide
+% % % % an abstraction for all of the possible intervals defined by the mentioned
+% % % % constants. We proceed as follows:
+% % % % \begin{itemize}
+% % % % 	\item We identify the  intervals of
+% % % % interest, i.e,: $I_1=(-\infty,8]$, $I_2=(8,10]$, and $I_3=(10,+\infty)$.
+% % % % 	\item For
+% % % % each interval $I_m$, we introduce one new constant $\mathtt{d}^m$
+% % % % abstracting the interval.
+% % % % 	\item We introduce one predicate per interval,
+% % % % namely:
+% % % % $lteq8$, $gt8lteq10$, $gt10$.
+% % % % 	\item We add sentences~(\ref{eq1}) requiring that both $D_{ij}$ and
+% % % % $D_{lk}$ include exactly all of the constants $\mathtt{d}^m$ (thus match)
+% % % % abstracting the intervals.
+% % % % 	\item We add the following sentence, which expresses the relationship
+% % % % between the values in the intervals:
+% % % % $$
+% % % % \begin{array}{l}
+% % % % 	lteq8(\mathtt{d}^1)\land
+% % % % 	\lnot gt8lteq10(\mathtt{d}^1)\land
+% % % % 	\lnot gt10(\mathtt{d}^1)\land\\
+% % % % 	\lnot lteq8(\mathtt{d}^2)\land	
+% % % % 	gt8lteq10(\mathtt{d}^2)\land
+% % % % 	\lnot gt10(\mathtt{d}^2)\land\\		
+% % % % 	\lnot lteq8(\mathtt{d}^3)\land
+% % % % 	\lnot gt8lteq10(\mathtt{d}^3)\land
+% % % % 	gt10(\mathtt{d}^3)
+% % % % \end{array}
+% % % % $$
+% % % % \item Finally, we use the relevant predicate to express that an attribute falls
+% % % % into an interval. E.g., to express that $att_{ij}\leq 10$, we write
+% % % % $\leq10(att(\mathtt{att}_{ij}))$.	
+% % % % \end{itemize}
+% % % % %%
+% % % % The case where more conditions occur, or other relational operators, e.g.,
+% % % % $=$, $\neq$, $>$, etc., are used is essentially analogous. Notice that,
+% % % % differently from the case where no numeric values occur, in order to write the
+% % % % theory, one needs to know in advance the Declare model.
+% % % %
+% % % %
+% % % %
+% % % % % \section{Solving Process Mining Problems with SAT}
+% % % % %
+% % % % % We now show how the various problems typical in Process Mining can be solved
+% % % % % using the SAT technology. As explained above, we rely on existing tools that,
+% % % % % given a FO theory and a bound on the size of its models, finds a model of the
+% % % % % theory by compiling the problem into SAT. We consider such tools as black-boxes
+% % % % % and do not enter the details of how the compilation is carried out. For this
+% % % % % reason, we describe our approach by simply reporting the theory we use for each
+% % % % % problem and how we interpret the obtained model.
+% % % % %
+% % % % %
+% % % % % \subsection{Log Generation}
+% % % % % Log generation is the problem of generating a set of traces, i.e., a log,
+% % % % % compliant with a set of Declare templates. We can cast this problem to that of
+% % % % % searching for a set of models of a theory. The idea is that each of the
+% % % % % obtained models represents a trace compliant with the Declare model. To this
+% % % % % end, assuming that the activities, the attributes and their respective domains
+% % % % % are fixed, we proceed as follows:
+% % % % %
+% % % % % \begin{enumerate}
+% % % % % \item we vary the size $b$ according to the desired length of the traces in
+% % % % % the log;
+% % % % % \item we produce the set $\C$ of sentences over $\sigma$ that correspond to
+% % % % % the MP Declare constraints the traces must satisfy;
+% % % % % \item we find as many models as desired of the theory
+% % % % % $\Gamma\cup\C$.
+% % % % % \end{enumerate}
+% % % % %
+% % % % % \subsection{Query Checking}
+% % % % % Consider a trace $\tau=\tau_1,\ldots,\tau_n$ and a Declare template $\phi$. In
+% % % % % general, templates have the form $\phi(X)$ or $\phi(X,Y)$, where $X$ and $Y$
+% % % % % are activities to be instantiated depending on the requirements one needs to
+% % % % % satisfy.
+% % % % % %%
+% % % % % While typically one deals with fully instantiated activities,
+% % % % %
+% % % % % Query checking is the problem of
+% % % % %
+% % % % %
+% % % % % \subsection{Conformance Checking}
+% % % % % Conformance checking is the problem of checking whether a given log, i.e., a
+% % % % % set of traces, satisfies a Declare model. Here, we focus on the problem of
+% % % % % checking only one trace, as the whole log can be checked by simply repeating
+% % % % % the process for each trace.
+% % % % %
+% % % % % The problem can be easily expressed as a variant of log generation.
+% % % % % The idea is to use the same theory as that for log generation, with the addition
+% % % % % of a set of sentences constraining the trace to match the input trace. In this
+% % % % % way, if the input trace satisfies the Declare constraints, then the theory has
+% % % % % exactly one model, the input trace itself, which is then returned. If, instead,
+% % % % % the trace does not satisfy the constraints, then the theory is inconsistent and
+% % % % % no model is returned.
+% % % % %
+% % % % % In details, let $\tau$ be the input trace, with the $i$-th event consisting of
+% % % % % an activity $a^i$ (we use superscripts to indicate the position in $\tau$),
+% % % % % with associated attributes $att^i_1,\ldots,att^i_{\ell_i}$, with assigned
+% % % % % values, respectively, $d^i_1,\ldots,d^i_\ell$. fix $b$ to the length of the
+% % % % % input trace. We write the theory $\Gamma$ and the set of sentences
+% % % % % $\C$ corresponding to the Declare constraints, as done for the case of log
+% % % % % generation and, for every
+% % % % % $i=1,\ldots,b$, add the following sentences:
+% % % % % \begin{itemize}
+% % % % % 	\item $act(\mathtt{e}_i)=\mathtt{a}^i$;
+% % % % % 	\item for every $j=1,\ldots, \ell_i$,
+% % % % % 			$att(\mathtt{e}_i,\mathtt{att}^i_j)=\mathtt{d}^i_j$.
+% % % % % \end{itemize}
+% % % % % %%
+% % % % % Then, to check whether $\tau$ satisfies the Declare model, it is then enough to
+% % % % % search for a model of the above theory. $\tau$ conforms to
+% % % % % the Declare model if and only if some model exists.
+% % % % %
+% % % % %
+% % % % %
+
+
+
+\subsection{Conformance Checking}\label{subseq:alloy:conf-check}
+To solve conformance checking in Alloy, we proceed as follows.
+For every trace $\tau$ in the input set $L$, we write a theory
+$\Gamma_\tau$ consisting of a set of FO sentences over $\sigma$,
+which admits, for a suitable fixed interpretation domain $\Delta$, a
+single model $\I_\tau$ which is also a model of $\Gamma$
+corresponding to $\tau$. Once done so, we add the following
+sentence to $\Gamma_\tau$, where $R$ is a $0$-ary relation
+(i.e., a proposition):
+$$\phi\doteq R\leftrightarrow \bigwedge_{\varphi\in \Phi} \varphi,$$
+where $\Phi$ is the set of input formulas to be checked.
+%%
+Then, we run Alloy on the resulting theory, i.e., $\Gamma_\tau$
+plus $\phi$, and the fixed interpretation domain $\Delta$,
+and conclude that the trace $\tau$ satisfy
+the input specification $\Phi$ iff the theory admits a model
+where $R$ is true (by construction, if such a model exists
+is unique).
+
+\begin{example}\label{ex:alloy-c-check}
+As an example, consider Ex.~\ref{ex:3} and trace $\tau$ of
+Ex.~\ref{ex:1}.
+The theory $\Gamma_\tau$ includes the following sentences:
+\begin{itemize}
+	\item $
+		Seq(0,\cst a_1, 2)\land
+		Seq(1,\cst a_2, 5)\land
+		Seq(2,\cst a_3, 9)\land
+		Seq(3,\cst a_3, 20)$
+		
+	\item $
+		AttV(0,\cst v, \cst a)\land
+		AttV(1,\cst w, \cst b)\land
+		AttV(1,\cst y, \cst d)\land
+		AttV(2,\cst s, \cst c)\land
+		AttV(3,\cst s, \cst d)$
+		
+	\item $N(0)\land
+			N(1)\land
+			N(2)\land
+			N(3)\land
+			N(5)\land
+			N(9)\land
+			N(20)$		
+			
+	\item $\forall i,a,t.Seq(i,a,t)\rightarrow
+		(i=0\land a= \cst a_1\land 2)\lor
+		(i=1\land a= \cst a_2\land 5)\lor
+		(i=2\land a= \cst a_3\land 9)\lor
+		(i=3\land a= \cst a_3\land 20)$
+		
+	\item sentences analogous to the one above for
+	$AttV$ and $N$ (omitted for brevity).
+\end{itemize}
+%%
+For fixed $\Delta=\C=
+			\set{0,1,2,3,5,9,20,
+					\cst{a_1},\cst{a_2},\cst{a_3},
+					\cst{v},\cst{w}, \cst{y},\cst{s},
+					\cst{a},\cst{b},\cst{c},\cst{d}
+				}
+		$,
+		it can be seen that the (only) model of $\Gamma_\tau$
+		is also one for $\Gamma$ and represents trace
+$\tau=\langle\cst{a}_1[
+	\cst{t}=2,
+	\cst{v}=\cst{a}
+],
+\cst{a}_2[
+	\cst{t}=5,
+	\cst{w}=\cst{b},
+	\cst{y}=\cst{d}
+],
+\cst{a}_3[
+	\cst{t}=9,
+	\cst{s}=\cst{c}
+],
+\cst{a}_3[
+	\cst{t}=20,
+	\cst{s}=\cst{d}
+]\rangle$.
+
+Then, we define
+$\phi=\textsc{Existence}(\cst a_2,\varphi)\land
+\textsc{Response}(\cst a_1,\varphi_a,\cst a_2,\varphi_c)$,
+for $\varphi$, $\varphi_a$, and $\varphi_c$ defined as
+in Ex.~\ref{ex:3}.
+%%
+Finally, with Alloy, we search for a model of
+$\Gamma_\tau\cup\set{\phi}$, giving $\Delta$ in input to Alloy.
+In the case at hand, the returned model (there exists
+exactly one) will have $R$ true, thus we conclude that
+$\tau$ satisfies $\Phi$.
+\end{example}
+
+
+
+\subsection{Query Checking}
+For query checking, we proceed in a way similar to
+conformance checking (in fact, from a general point of
+view, conformance checking can be seen as a special case
+of query checking where the query has no free
+variables, i.e., is boolean).
+
+Given a trace $\tau\in L$, we produce the associated theory
+(admitting one model only) $\Gamma_\tau$, as explained in
+Sec.~\ref{subseq:alloy:conf-check}. Then, given the
+query $\varphi(\vec x)$ with free variables
+$\vec x$, we first add a new predicate symbol $Ans$
+with arity $\card{\vec x}$ to $\sigma$, and then
+add the following sentence to $\Gamma_\tau$:
+$\forall \vec x.Ans(\vec x)\leftrightarrow \varphi(\vec x)$.
+As a result, the (unique) model of the resulting theory
+$\Gamma_\tau\cup\set{\varphi}$ is essentially the
+same as that of $\Gamma$ but includes the additional relation
+$Ans$ containing the tuples included in $\varphi^\I$.
+
+Therefore, by feeding Alloy with the input consisting in
+the theory $\Gamma_\tau\cup\set{\varphi}$ and the
+interpretation domain associated with $\tau$, we can easily
+answer the query.
+
+\begin{example}
+For an example of query checking, consider the problem
+defined in Ex.~\ref{ex:q-check}, where the query
+%%
+$$\varphi=\forall i,t.(
+			\forall\vec x.(
+				(Seq(i,?x,t)\land \varphi_a)
+					\rightarrow
+$$
+
+\vspace{-5mm}
+$$
+				(\exists i',t'.i'\geq i\land(
+					\exists\vec x'.
+						Seq(i',?y,t')\land\varphi_c)
+				)
+			)
+		)
+		$$
+is evaluated against
+trace~$\tau$ of Ex.~\ref{ex:1}:
+$\tau=\langle\cst{a}_1[
+	\cst{t}=2,
+	\cst{v}=\cst{a}
+],
+\cst{a}_2[
+	\cst{t}=5,
+	\cst{w}=\cst{b},
+	\cst{y}=\cst{d}
+],
+\cst{a}_3[
+	\cst{t}=9,
+	\cst{s}=\cst{c}
+],
+\cst{a}_3[
+	\cst{t}=20,
+	\cst{s}=\cst{d}
+]\rangle$.
+
+To answer the query, we simply feed Alloy with the theory
+$\Gamma_\tau$ shown in Ex.~\ref{ex:alloy-c-check}
+union the sentence
+$\forall \vec x.Ans(\vec x)\leftrightarrow \varphi$,
+and with the interpretation domain $\Delta$ associated with
+$\tau$, and then ask Alloy to find a model of the
+input theory.
+The content of relation $Ans$ corresponds to the answer to
+$\varphi$.
+\end{example}
+
+

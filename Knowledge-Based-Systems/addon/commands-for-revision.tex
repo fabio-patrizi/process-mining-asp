@@ -1,0 +1,33 @@
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Highlight changes in revised manuscripts
+%
+% To color text
+\RequirePackage{xcolor}
+% To create side-notes
+\RequirePackage{marginnote}
+% Change the following line for larger (or narrower) side spaces
+\setlength{\marginparwidth}{2cm}
+% Change the following line for bigger (or smaller) fonts
+\renewcommand*{\marginfont}{\footnotesize}
+
+\newenvironment{HlRev}[1][]{%
+% No hyperrefs here
+\begin{NoHyper}
+% Change the colour to blue
+\color{OliveGreen}%
+% If an argument is passed, it is used as the number of the comment in a side note
+\ifx\newenvironment#1\newenvironment\else\marginnote{Comment #1}\fi%
+%
+}{%
+% Restores the normal colour
+\normalcolor%
+% Restores the normal hyperref behaviour
+\end{NoHyper}%
+}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+% To cross-reference other documents
+\usepackage{xr}
+\externaldocument[rev:]{../letter-to-referees-for-submission-2}

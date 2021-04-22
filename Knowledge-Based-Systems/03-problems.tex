@@ -1,0 +1,725 @@
+\section{The Framework}
+
+In this section, we introduce the technical framework used in the paper.
+Essentially, we provide an axiomatization of traces in first-order logic
+(FOL) interpreted over the naturals (and additional objects). We then show how MP-Declare constraints can be captured as FOL formulas and formalize the problems of interest for Declarative Process Mining.
+
+\subsection{Log Traces as FO interpretations}
+We model traces as suitable first-order (FO) interpretations.
+A (FO)~\emph{signature} is a tuple $\sigma=\tup{\C,\P,\F}$, where:
+$\C$ is a countable set of \emph{constant} symbols, $\P$ is a finite set of
+\emph{predicate} symbols, and $\F$ is a finite set of \emph{function} symbols.
+Predicate and function symbols have finite arity. When needed, we write $P/a$
+(resp.~$f/a$) to indicate that a predicate (function) symbol has arity $a$.
+
+An \emph{interpretation} $\iota$ of a signature $\sigma$ over a
+(possibly infinite) \emph{universe} $\Delta$ is a pair
+$\iota=\tup{\Delta,\cdot^\iota}$, where $\cdot^\iota$ is the
+\emph{interpretation function}, i.e., a function associating:
+	\begin{itemize}
+		\item each constant symbol $c\in\C$ with an object $c^\iota\in\Delta$;
+		\item each predicate symbol $P\in\P$ of arity $a$ with a relation
+$P^\iota\subseteq \Delta^a$;
+		\item each function symbol $f\in F$ of arity $a$ with a mapping
+$f^\iota:\Delta^a\rightarrow\Delta$.
+	\end{itemize}
+%%
+
+Given a FO vocabulary $\sigma$ and a numerable set $V$ of
+variable symbols, formulas $\varphi$ of FOL over $\sigma$
+respect the following syntax:
+$$\varphi = P(\vec t)\mid \lnot \varphi\mid \varphi\land\varphi\mid \exists
+x.\varphi, \mbox{ where:}$$
+\begin{itemize}
+ \item $P\in \P$ is a predicate symbol;
+ \item $\vec t$ is a tuple
+	$\tup{t_1,\ldots,t_a}$, with $a$ the arity of $P$,
+	and each $t_i$ a \emph{term} from $\sigma$, i.e., a variable or a constant
+symbol from $\sigma$, or a \emph{function term}, i.e., an expression of the
+form $f(\vec t')$, with $f$ a function symbol from $\sigma$ and $\vec t'$ a
+tuple of terms
+from $\sigma$, of size equal to the arity of $f$.
+\end{itemize}
+%%
+As standard, we define the following abbreviations:
+$\varphi_1\lor \varphi_2\doteq \lnot(\lnot\varphi_1\land\lnot\varphi_2)$,
+$\forall x.\varphi\doteq\lnot\exists x.\lnot\varphi$,
+$\varphi_1 \rightarrow \varphi_2\doteq \lnot\varphi_1 \lor \varphi_2$,
+and $\varphi_1 \leftrightarrow \varphi_2\doteq (\varphi_1 \rightarrow
+\varphi_2) \land (\varphi_2 \rightarrow \varphi_1)$.
+%%
+The variable $x$ in $\exists x.\varphi$ (resp.~$\forall x.\varphi$) is
+an (existentially, resp.~universally) quantified variable.
+Variables in a FO
+formula do not have to be quantified, in which case they are called
+\emph{free variables}.
+Formulas containing only quantified variables are called \emph{sentences}.
+%%
+
+FO formulas are interpreted over FO interpretations and
+\emph{variable assignments}, i.e., total mappings $\nu:V\mapsto \Delta$,
+for $\Delta$ the universe of the interpretation in question.
+Formula interpretations require interpreting terms first.
+Given an interpretation $\I=\tup{\Delta,\cdot^\I}$ of $\sigma$ and a term $t$
+over $\sigma$, the
+interpretation of $t$ under $\nu$ and $\I$ is the object
+$t^\I_\nu\in \Delta$ such that:
+\begin{itemize}
+ \item $t^\I_\nu = \nu(t)$, if $t$ is a variable symbol;
+ \item $t^\I_\nu = c^\I$, if $t$ is a constant symbol;
+ \item $t^\I_\nu = f^\I({t_1}^\I_\nu,\ldots,{t_a}^\I_\nu)$, for $a$
+the arity of $f$, if $t=f(t_1,\ldots,t_a)$.
+\end{itemize}
+%%
+In this paper, we assume that every interpretation $\iota$ of $\sigma$ is
+s.t.~$\Delta=\C$ and
+for every $c\in\C$, $\iota(c)=c$.
+In a word, we have \emph{nominals}, i.e., we can always refer to an
+element of the interpretation domain through a constant (notice that, again,
+this cannot be expressed in FOL, thus needs to be assumed).
+
+
+A FO interpretation
+$\I$ is said to \emph{satisfy}
+a FO formula $\varphi$ under assignment $\nu$,
+written $\I, \nu\models\varphi$, iff one of the following holds:
+%%
+\begin{itemize}
+	\item $\varphi=P(t_1,\ldots,t_a)$ and
+	$\tup{{t_1}^\I_\nu,\ldots,{t_a}^\I_\nu}\in P^\I$;
+	\item $\varphi=\lnot \phi$ and $\I,\nu\not\models\phi$;
+	\item $\varphi=\phi_1\land \phi_2$ and $\I,\nu\models \phi_i$, for $i=1,2$;
+	\item $\varphi=\exists x.\phi$ and there exists $o\in\Delta$ such that
+$\I,\nu'\models \phi$, with $\nu'(x)=o$ and $\nu'(v)=\nu(v)$, for $v\neq x$.
+\end{itemize}
+%%
+% % Notice that, in order to check satisfaction of $\varphi$, all terms
+%%occurring
+% % in it must be replaced by their interpretation.
+% %
+An interpretation $\I$ \emph{satisfies}
+a formula $\varphi$, written $\I\models \varphi$, iff $\I,\nu\models\varphi$
+for all assignments $\nu$.
+%%
+A \emph{FO theory} $\Gamma$ is a possibly infinite set of FO sentences. Here,
+we focus on finite theories.
+An interpretation is said to
+satisfy a theory $\Gamma$ if $\I\models\varphi$ for all $\varphi\in\Gamma$.
+When
+this is the case, $\I$ is said to be a \emph{model} of $\Gamma$.
+%%
+
+
+We model traces as models of a particular theory.
+%%
+A signature
+$\sigma=\tup{\C,\P,\F}$ is said to be a \emph{trace signature} if (we use, as
+standard, the infix notation for $<$, $\leq$, etc.):
+\begin{itemize}
+	\item	
+		$\C$ includes a finite set of integers, including 0,
+		plus a \emph{finite number}
+		of additional constants;		
+	\item $\P=\set{N/1,Seq/3,AttV/3,<,\leq,=,\geq,>}$;		
+	\item $\F=\set{+,-}$.
+	
+\end{itemize}
+%%
+We consider only those interpretations where $N$ is interpreted as a
+\emph{finite subset} of $\mathbb{N}_0$ and where all relational operators
+and functions on integers are interpreted as the restriction on $N$ of
+the standard corresponding operators on $\mathbb{N}_0$. Notice that this cannot
+be expressed in FOL as, in particular, there is no axiomatization for
+integers (thus the requirements need to be assumed). As a consequence of these
+requirements, we deal only with \emph{finite models}.
+
+Given a trace signature, we next define a \emph{trace theory} $\Gamma$.
+Essentially, the intuition is that the models of $\Gamma$ are s.t.: $Seq$
+models a finite sequence, indexed from $0$ to some $n$, of activities with
+non-decreasing (integer) timestamps --we call the indices of the
+sequence \emph{events};
+$AttV$ is a (possibly partial) functional relation mapping
+events and attribute names into objects.
+%%
+Formally, $\Gamma$ is the theory including the following sentences:
+\begin{itemize}
+	\item $Seq$ is a non-empty indexed sequence of activities and
+non-decreasing timestamps:	
+		\begin{itemize}
+			\item
+			indexes and timestamps are integers: $\forall
+i,a,t.Seq(i,a,t)\rightarrow N(i)\land N(t)$
+			\item $Seq$ is non-empty and starts with index 0: $\exists
+a,t.Seq(0,a,t)$
+			\item $Seq$ is indexed from $0$ to some final index $i$:\\			
+			$\exists i,a,t.Seq(i,a,t)\land $\\
+		\phantom{x}$
+			(\lnot\exists i',a',t'.i'>i\land Seq(i',a',t'))\land $
+($i$ is the last index of $Seq$)\\
+		\phantom{x}$(\forall i'.0<i'<i\rightarrow \exists
+a,t.Seq(i',a,t))$ ($Seq$ is indexed from 0 to $i$)
+			\item timestamps are non-decreasing:\\
+				$\forall i,a,t,a',t'.(Seq(i,a,t)\land
+Seq(i+1,a',t'))\rightarrow t'\geq t$
+		\end{itemize}
+		
+	\item $AttV$ is a functional relation mapping events and attribute names
+(which cannot be integers) into objects:
+	\begin{itemize}	
+		\item $\forall i,n,v.AttV(i,n,v)\rightarrow$\\
+			$\phantom{xx}\lnot N(n)\land$ (attribute names cannot be
+integers)\\
+			$\phantom{xx}\lnot\exists v'.v\neq v'\land AttV(i,n,v')$ ($AttV$ is
+functional, i.e., given an event $i$ and an attribute name $n$ assigns at
+most one value $v$ to $n$)
+	\end{itemize}
+\end{itemize}
+%%
+In this paper, a \emph{trace} is a model of the theory $\Gamma$ defined
+above. As already mentioned, by the definition of
+$\Gamma$, traces are always finite.
+%%
+It is immediate to see that any trace corresponds to one such model and,
+viceversa, any model of
+$\Gamma$ represents a trace.
+In particular, $Seq$ represents the sequence of events, each represented by
+its position in the sequence and its associated activity and timestamp, and
+$AttV$ is the assignment of values to the relevant attributes at each event.
+
+\begin{example}\label{ex:1}
+Consider trace
+$\tau=\langle\cst{a}_1[
+	\cst{t}=2,
+	\cst{v}=\cst{a}
+],
+\cst{a}_2[
+	\cst{t}=5,
+	\cst{w}=\cst{b},
+	\cst{y}=\cst{d}
+],
+\cst{a}_3[
+	\cst{t}=9,
+	\cst{s}=\cst{c}
+],
+\cst{a}_3[
+	\cst{t}=20,
+	\cst{s}=\cst{d}
+]\rangle$, which represents the sequence of events including
+activity $\cst{a}_1$ with timestamp $2$ and attribute $\cst{v}$ assigned to
+value $\cst{a}$,
+then activity $\cst{a}_2$ with timestamp $5$ and
+attributes $\cst w$ and $\cst y$ respectively assigned to value $\cst b$ and
+$\cst d$, and so on.
+%%
+Trace $\tau$ is captured by the following interpretation $\I$ of the
+trace signature $\sigma$ (we omit the interpretation of the relational
+operations, as well as functions $+$ and $-$, for brevity, but these can be
+easily obtained as their
+restriction to $N^\I$):
+%%
+\begin{itemize}
+	\item
+		$\Delta=\C=
+			\set{0,1,2,3,5,9,20}\cup
+				\set{
+					\cst{a_1},\cst{a_2},\cst{a_3},
+					\cst{v},\cst{w}, \cst{y},\cst{s},
+					\cst{a},\cst{b},\cst{c},\cst{d}
+				}
+		$
+	\item $N^{\I}=\set{0,1,2,3,5,9,20}$
+	\item $Seq^{\I}=\set{\tup{0,\cst a_1, 2},\tup{1,\cst a_2,5},\tup{2,\cst a_3,9},\tup{3,\cst a_3,20}}$
+	\item $AttV^{\I}=\set{
+							\tup{0,\cst v,\cst a},
+							\tup{1,\cst w,\cst b},
+							\tup{1,\cst y,\cst d},
+							\tup{2,\cst s,\cst c},
+							\tup{3, \cst s,\cst d}}$
+\end{itemize}
+\end{example}
+
+
+\subsection{MP-Declare}
+We are interested in capturing formal properties of traces to express and
+solve problems typical in Declarative Process Mining.
+%%
+In general, our approach can deal with any property expressed
+as a FO formula over the (possibly extended) signature
+$\sigma$.
+%%
+However, in Process Mining, there are
+a number of patterns that typically occur. In fact,
+these are so common that the Process Mining community has
+devised a specific language, namely MP-Declare~\cite{DBLP:journals/eswa/BurattinMS16},
+for this purpose.
+%%
+We can formally prove that MP-Declare can be easily captured
+by FO in our framework (this is a rather simple translation
+exercise), so
+by being able to solve problems state in FO, we can also
+solve problems for MP-Declare. In this section,
+we show some of these typical constraints, together with
+their translation in FOL. Their formal semantics can be
+easily obtained directly from this.
+
+For a FOL formula $\varphi$, we write
+$free(\varphi)$ to denote the set of $\varphi$'s free variables.
+By a slight abuse of notation, we consider a vector $\vec x$
+as a set, i.e., the set including all the components
+of $\vec x$. Some typical MP-Declare constraints follow:
+
+\begin{itemize}
+	\item $Existence(A,\varphi_a)=
+		\exists i,t,\vec x.Seq(i,A,t)\land\varphi_a$,
+		where:
+		$free(\varphi_a)\subseteq\set{i,t}\cup\vec x$
+		and
+		$\varphi_a$ does not mention $Seq$
+		but
+		can mention $AttV$ only in atoms of the form
+		$AttV(i,\cdot,\cdot)$;
+	\item $Absence(A,\phi)=\lnot Existence(A,\phi)$;
+	\item $Choice(A,B,\phi)=Existence(A,\phi)\lor Existence(B,\phi)$;
+	\item $ExclusiveChoice(A,B,\phi)=
+		(Existence(A,\phi)\land Absence(B,\phi))\lor
+		(Absence(A,\phi)\land Existence(B,\phi))$;
+		
+	\item $RespExistence(A,\varphi_a,B,\varphi_c)=
+		\forall i,t.(
+			\forall\vec x.(
+				(Seq(i,A,t)\land \varphi_a)
+					\rightarrow
+				(\exists i',t'.(
+					\exists \vec x'.
+						Seq(i',B,t')\land\varphi_c)
+				)
+			)
+		)
+		$,
+		where:
+		$free(\varphi_a)\subseteq\set{i,t}\cup\vec x$
+		$free(\varphi_c)\subseteq\set{i,t,i',t'}\cup\vec x\cup\vec x'$
+		and
+		$\varphi_a$ and $\varphi_c$ do not mention
+		$Seq$ but can mention $AttV$ only in atoms
+		of the forms, respectively,
+		$Attv(i,\cdot, \cdot)$ and
+		$Attv(i,\cdot, \cdot)$ or $Attv(i',\cdot, \cdot)$.
+	\item $Response(A,\varphi_a,B,\varphi_c)=
+		\forall i,t.(
+			\forall\vec x.(
+				(Seq(i,A,t)\land \varphi_a)
+					\rightarrow
+				(\exists i',t'.i'>i\land(
+					\exists\vec x'.
+						Seq(i',B,t')\land\varphi_c)
+				)
+			)
+		)
+		$, where $\varphi_a$ and $\varphi_c$ are as above.	
+\end{itemize}
+%%
+This list is non-exhaustive and does not
+include many other MP-Declare constraints.
+%%
+We observe, however, that all the constraints share a similar
+structure and that none of them contains more than 2
+free variables (parameters). As a result, modulo the
+specific formulas $\varphi_a$ and $\varphi_c$ (representing the activation and the correlation condition of each constraint),
+the examples above one can easily be adapted to the
+remaining cases.
+
+\section{Problems}
+We next describe the problems that we deal with in this paper.
+We stress that our framework is capable of dealing with any
+FOL constraint, however, for typical problems in Declarative
+Process Mining, formulas from MP-Declare are sufficient. So, while
+here we remain as general as possible, in the experiments,
+we will on MP-Declare constraints only.
+
+
+
+\subsection{Generation of Event Logs}
+The problem of \emph{log generation} consists in finding a set of traces,
+of a desired cardinality, that satisfy a sentence $\varphi$ over $\sigma$.
+In other words, this problem consists in finding a set of models of the formula
+$\varphi\land\Phi_\Gamma$, where $\Phi_\Gamma=\bigwedge_{\phi\in\Gamma}\phi$
+is the conjunction of all the sentences occurring in $\Gamma$.
+
+Since $\varphi$ is an arbitrary FO formula and the problem of checking whether
+one such formula admits any (even only finite) model is undecidable~\cite{libkin-book},
+the desired set of traces is in general not computable. However, if one fixes
+the maximum length of the traces and the interpretation domain of $\I$,
+then it is immediate to see that the set is effectively computable, as the
+logic used essentially reduces to propositional logic.
+This is the typical scenario in Process Mining.
+
+\begin{example}\label{ex:3}
+Consider the following set of MP-Declare constraints:
+\begin{itemize}
+ \item $\textsc{Existence}(\cst a_2,\varphi)$, with:
+	\begin{itemize}
+		\item $\varphi=t>3\land \forall a_1,v_1.
+			AttV(i,a_1,v_1)\rightarrow
+				v_1\neq \cst d$
+	\end{itemize}
+		\item $\textsc{Response}(\cst a_1,\varphi_a,\cst a_3,\varphi_c)$, with:
+	\begin{itemize}
+		\item $\varphi_a=t\geq 1\land AttV(i,\cst v,\cst a)$, and
+		\item $\varphi_c=
+		\exists v_1,v_2.
+			AttV(i,\cst v,v_1)\land AttV(i',\cst s,v_2)\land
+				v_1\neq v_2$
+	\end{itemize}
+\end{itemize}
+%%
+Assume
+that one needs to generate a set of traces of length at most, say, 10,
+satisfying such constraints. Moreover, assume that:
+\begin{itemize}
+ \item the set of available activities is
+	$A=\set{\cst a_1, \ldots,\cst a_6}$;
+ \item the set of attribute names of interest is
+	$AN=\set{\cst{v},\cst{w}, \cst{y},\cst{s}}$;
+ \item the set of possible attribute values is:
+	$AV=\set{\cst{a},\cst{b},\cst{c},\cst{d}}$
+ \item we are interested in the time interval $TI=[0,100]$, i.e., the timestamps
+ can take values only in this range.
+\end{itemize}
+%%
+Notice that (for now), we do not care about the fact that certain attribute names
+can be associated with certain activities only or that some values
+can be used only as attribute names or values.
+Of course, this can be expressed (and then enforced) by introducing
+additional constraints (in the form of FOL formulas) on top of
+$\Gamma$.
+
+Considering the correspondence between models of $\Gamma$ and traces, the log generation problem consists in finding a number of distinct
+models with interpretation domain $\Delta=TI\cup A\cup AN\cup AV$.
+Obviously, $\Delta$ being finite, all such models can be effectively
+computed (they are finite and finitely many).
+
+For instance, the following traces (i.e., models of $\Gamma$)
+satisfy the constraints of Ex.~\ref{ex:3}:
+
+\begin{itemize}
+ \item trace $\tau$ of Ex.~\ref{ex:1};
+ \item trace $\tau_1=\langle\cst{a}_2[
+	\cst{t}=5,
+	\cst{v}=\cst{c},
+	\cst{w}=\cst{v}]\rangle$ (notice that, in $\tau_1$, $\cst v$ is used as both
+	an attribute name and an attribute value).
+\end{itemize}
+
+
+
+\end{example}
+
+\subsection{Conformance Checking}
+\emph{Conformance checking} is the problem of checking whether a set $L$ of
+traces, a.k.a.~\emph{log}, is s.t.~each of
+its elements satisfies a set of FOL (MP-Declare) constraints
+$\Phi=\set{\varphi_1,\ldots,\varphi_n}$.
+Observe that, since traces are always finite, the problem is decidable.
+Indeed, the problem essentially
+reduces to standard (boolean) query evaluation in
+databases~\cite{vianu-book}, by seeing
+each trace in $L$, which is a FO interpretation $\I$,
+as a database over the
+schema $\sigma$, and each formula $\phi\in\Phi$ as a
+formula (query) over it.
+
+
+\begin{example}\label{ex:2}
+Consider again the set of constraints of Ex.~\ref{ex:3}.
+The first constraint is satisfied by a trace if it contains
+an event with timestamp $t$ greater than 3,
+with activity $\cst a_2$, and s.t.~the value $\cst d$ is
+not assigned to any of its attributes.
+%%
+The second constraint requires that whenever an event $e$ occurs
+with
+timestamp greater or equal than 1, with activity $\cst a_1$, and
+s.t.~the value $\cst a$ is assigned to attribute $\cst v$, then
+an event $e'$ must occur (strictly) later with activity
+$\cst a_3$ and
+s.t.~attribute $\cst v$ at $e$ and attribute
+$\cst s$ at $e'$ are assigned distinct values.
+
+Considering trace~$\tau$ of Ex.~\ref{ex:1}:
+$\tau=\langle\cst{a}_1[
+	\cst{t}=2,
+	\cst{v}=\cst{a}
+],
+\cst{a}_2[
+	\cst{t}=5,
+	\cst{w}=\cst{b},
+	\cst{y}=\cst{d}
+],
+\cst{a}_3[
+	\cst{t}=9,
+	\cst{s}=\cst{c}
+],
+\cst{a}_3[
+	\cst{t}=20,
+	\cst{s}=\cst{d}
+]\rangle$, it can be easily seen that both constraints are satisfied by the
+interpretation $\I$ of $\sigma$ associated with $\tau$ and described
+in Ex.\ref{ex:1}.
+%%
+\end{example}
+
+
+% %
+% % \subsection{Compliance Monitoring}
+% %
+% %
+% %
+% % \begin{table*}[t!]
+% % 	\centering
+% %     \tiny
+% % 	\begin{tabular}{ l | l  }
+% % 		\hline
+% % 		\textbf{Template} & \textbf{Condition}  \\
+% % 		\hline
+% % 		\multirow{2}{*}{response}  & when $ p > 0 $, for each pending activation, an ILP problem is instantiated using the correlation condition. \\
+% %                                        & When the activation becomes fulfilled, the corresponding ILP problem is deleted. \\ \hline
+% % 		  not response  & when it is activated, the negation of the correlation condition is added to all active ILP problems. \\ \hline
+% % 		  precedence   & can never be in conflict. \\ \hline
+% % 		  not precedence   & can never be in conflict. \\ \hline
+% % 		  init   & can never be in conflict. \\ \hline
+% % 		  absence   & the negation of the activation condition is always added to all active ILP problems. \\ \hline
+% % 		 \multirow{2}{*}{existence}  & when $ f < 1 $, an ILP problem is instantiated using the activation condition. When the constraint becomes  \\
+% %                           &   fulfilled, the corresponding ILP problem is deleted.\\ \hline
+% % 		 \multirow{2}{*}{responded existence}  & when $ p > 0 $, for each pending activation, an ILP problem is instantiated using the correlation condition. \\
+% %                            &        When the activation becomes fulfilled, the corresponding ILP problem is deleted.  \\ \hline
+% % 		  not responded existence  & when it is activated, the negation of the correlation condition is added to all active ILP problems. \\ \hline
+% % 		 \multirow{2}{*}{chain response}  & when there is a pending activation, an ILP problem is instantiated using the correlation condition. When \\
+% % &  the pending activation becomes fulfilled, the corresponding ILP problem is deleted. \\ \hline
+% % 		  not chain response  & can only be in conflict with a chain response with the same parameters in case both are activated. \\ \hline
+% % 		  chain precedence   & can never be in conflict. \\ \hline
+% % 		  not chain precedence  & can never be in conflict. \\ \hline	
+% % 		 \multirow{2}{*}{alternate response}  &  when $ p > 0 $, for each pending activation, an ILP problem is instantiated using the correlation condition.\\
+% % &  When the activation becomes fulfilled, the corresponding ILP problem is deleted. \\ \hline
+% % 		  alternate precedence   & can never be in conflict. \\ \hline
+% % 	\end{tabular}
+% % 	\caption{ Criteria for ILP problem instantiation and update}
+% % 	\label{tab:advConfCtr}
+% % \end{table*}
+% %
+% %
+% %
+% % Our framework used for compliance monitoring is composed of the operations:
+% % \begin{itemize}
+% % 	\item opening: this method is called once per trace, before starting the analysis of the first event of the trace;
+% % 	\item fulfillments: this method is called for each event of the trace and is supposed to return the set of fulfillments that have been observed so far;
+% % 	\item violations: this method is called for each event of the trace and is supposed to return the set of violations that have been observed so far;
+% % 	\item activations:  this method is called for each event of the trace and is supposed to update the set of activations that have been observed so far;
+% % 	\item closing: this procedure is called once per trace, after all the events have been analyzed.
+% % \end{itemize}
+% % This set of operations can be instantiated for different Declare templates.
+% % For example, for the response template the operations are instantiated as in Table~\ref{tab:responsealgo}:
+% % \begin{itemize}
+% % 	\item opening: not used;
+% % 	\item fulfillments: this procedure checks whether the input event refers to a target. If this is the case, then all pending activations that can be correlated to this target (in case the time and the correlation conditions are satisfied) become fulfillments;
+% % 	\item violations: not used;
+% % 	\item activations: the activation procedure checks whether the input event refers to an activation of the constraint and the activation condition is satisfied (in this case the event has to be added to the set of pending activations);
+% % 	\item closing: all pending activations that do not have a corresponding target when the entire trace has been processed become violations.
+% % \end{itemize}
+% %
+% %
+% %
+% % The current state of a trace with respect to a constraint is described using a four valued semantics. These values are \textit{possibly satisfied}, \textit{possibly violated}, \textit{permanently satisfied} or \textit{permanently violated}. These semantic values can be interpreted as follows:
+% %
+% % \begin{itemize}
+% % 	\item \textbf{Possibly satisfied}: means that the constraint is currently satisfied, but might be violated in the future.
+% % 	\item \textbf{Possibly violated}: means that constraint is currently violated, but might be satisfied in the future.
+% % 	\item \textbf{Permanently satisfied}: means that the constraint is permanently satisfied and can no longer become violated in the future.
+% % 	\item \textbf{Permanently violated}: means that the constraint is permanently violated and can no longer become satisfied in the future.
+% % \end{itemize}
+% %
+% % The semantic value for the current state of a trace depends on the type of constraint. Table~\ref{tab:semanticCriterion} shows the criteria to determine the state of a trace for each constraint type.
+% %
+% %
+% %
+% %
+% % Consider constraints $absence(B)$ and $ response(A,B) $ without data. The absence constraint says that activity $ B $ should never occur in a trace. The response constraint says that if $ A $ occurs then $ B $ must eventually occur in the trace. As soon as $ A $ occurs, these constraints can still be individually satisfied, but they are \emph{conflicting} meaning that only one of them can be fulfilled at the end of the process execution. If $ B $ occurs in the trace after $A$, then the absence constraint will be violated and, if $ B $ does not occur, then the response constraint will be violated.
+
+
+
+
+
+\subsection{Query Checking}
+\emph{Query checking} can be described as the problem of \emph{query
+answering}~\cite{vianu-book} over traces.
+To formally define this, we need some preliminary notions.
+A \emph{query} is a FO formula. If the formula is a sentence, it is called a
+\emph{boolean} query. Intuitively, given an interpretation
+$\I=\tup{\Delta,\cdot^\I}$ and a query $\varphi$ over the same signature
+$\sigma$,
+the answer to $\varphi$ over the interpretation $\I$, denoted  $\varphi^I$, is
+the set of assignments to the free variables (the placeholders) of $\varphi$ that make $\I$
+satisfy $\varphi$. Formally, $\varphi^\I$ is defined by induction as follows.
+
+Let $v_1,\ldots,v_n$ be the free variables of $\varphi$ (arbitrarily sorted).
+Then, $\varphi^I$ is the relation $\varphi^I\subseteq \Delta^n$
+s.t.~$\tup{a_1,\ldots,a_n}\in\varphi^\I$ iff for any assignment $\nu$
+s.t.~$\nu(v_i)=a_i$, it is the case that $\I,\nu\models\varphi$.
+The problem of query checking consists in determining $\varphi^\I$. Notice that
+if the interpretation has an infinite interpretation domain $\Delta$, then
+$\varphi^\I$ cannot be computed, in general. If, instead, $\Delta$
+is finite, this is not the case anymore. Again, this
+is the setting of interest in Process Mining.
+
+\begin{example}\label{ex:q-check}
+	Consider once again trace~$\tau$ of Ex.~\ref{ex:1}:
+$\tau=\langle\cst{a}_1[
+	\cst{t}=2,
+	\cst{v}=\cst{a}
+],
+\cst{a}_2[
+	\cst{t}=5,
+	\cst{w}=\cst{b},
+	\cst{y}=\cst{d}
+],
+\cst{a}_3[
+	\cst{t}=9,
+	\cst{s}=\cst{c}
+],
+\cst{a}_3[
+	\cst{t}=20,
+	\cst{s}=\cst{d}
+]\rangle$.
+%%
+Assume we are interested in all the pairs of events involved in the
+satisfaction of a response constraint.
+These are the activities
+$?x$ and $?y$ (notice these are variables) s.t.~the following formula
+holds, with $\varphi_a$ and $\varphi_c$ specific formulas
+(that meet the requirements discussed before):
+%%
+$$\varphi=\forall i,t.(
+			\forall\vec x.(
+				(Seq(i,?x,t)\land \varphi_a)
+					\rightarrow 
+$$
+
+\vspace{-5mm}
+$$
+				(\exists i',t'.i'\geq i\land(
+					\exists\vec x'.
+						Seq(i',?y,t')\land\varphi_c)
+				)
+			)
+		)
+		$$
+Notice that the formula $\varphi$ defined above has two
+free variables, $?x$ and $?y$. Thus, the answer $\varphi^\I$, where $\I$ is
+the model of $\Gamma$ capturing $\tau$ (see Ex.~\ref{ex:1}) is
+a relation $\varphi^\I\subseteq \Delta^2$. Specifically, the
+relation contains all those pairs of activities that, once
+replacing $?x$ and $?y$, make $\varphi$ true.
+%%
+For instance, if $\varphi_a$ and $\varphi_c$ are both $true$, then
+$\varphi^I=\set{
+			\tup{\cst a_1, \cst a_2},
+			\tup{\cst a_1, \cst a_3},
+			\tup{\cst a_2, \cst a_3},
+			\tup{\cst a_3, \cst a_3}}$
+
+If $\varphi_a$ and $\varphi_c$ are instead as in Ex.~\ref{ex:3},
+we have:
+$\varphi^I=\set{
+			\tup{\cst a_1, \cst a_3},\allowbreak
+			\tup{\cst a_2, \cst a_1},\allowbreak
+			\tup{\cst a_2, \cst a_2},\allowbreak
+			\tup{\cst a_2, \cst a_3},
+			\tup{\cst a_3, \cst a_1},
+			\tup{\cst a_3, \cst a_2},
+			\tup{\cst a_3, \cst a_3}}
+			$.
+The counter-intuitive answer to this query, i.e., the fact
+that some pairs contain activities in reversed order wrt that in
+which they appear in the trace, is due to the fact
+that whenever $\varphi_a$ does not hold, as a consequence of the
+implication, $\varphi$ trivially evaluates to true, no
+matter what activity is assigned to $?y$. It is demanded
+to the designer of the query to take care of this aspect.
+\end{example}
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % %
+% % % Temporal logic query checking \cite{Chan/CAV2000:TemporallogicQueries} aims at discovering properties of the model that are not known \textit{a priori}.
+% % % Therefore, the extra input element as compared to model checking is a \textit{query}, i.e., a temporal logic formula containing so-called \emph{placeholders}, typically denoted as $?x$. The output of the query checking technique is a set of temporal logic formulas, which derive from the input query. Every output formula stems from the replacement of placeholders with propositional formulas, which make the overall temporal logic formula satisfied in a given structure.
+% % % The seminal work of \cite{Chan/CAV2000:TemporallogicQueries} considered Computation Tree Logic (CTL) \cite{Clarke.etal/ACMTPLS1986:CTL} as the language for expressing queries.
+% % % Unlike {LTL}, adopting a linear time assumption, {CTL} is a branching-time logic: the evaluation of the formula is based on a tree-like structure, where different evolutions of the system over time are simultaneously considered in different branches of the computation model.
+% % % %\paragraph{Constraint queries}
+% % % Following the example of \cite{DBLP:conf/otm/RaimCMMM14} applying {LTL} query checking to discover (standard) declarative constraints, here we mine multi-perspective declarative processes out of event logs stored in databases through query checking.
+% % % % Unlike \cite{DBLP:conf/otm/RaimCMMM14} though, additional attributes than task labels play a pivotal role in our research.
+% % % % In other words, we look for assignments in {\LTLFOf} formulae expressing {\Declare} constraints such that the resulting constraint is fulfilled by the event log.
+% % % %The remainder of this section is organized as follows: \cref{sec:queries:compliance} introduces the notions of event- and trace-compliance queries, namely {\LTLFOf} formulae whose answers are events and traces satisfying them in the event log; \cref{sec:metrics} builds upon the queries introduced before to define measures to be used in the context of constraints discovery, based on the frequency with which constraints are activated and fulfilled in the event log; \cref{sec:constraints:discovery:via:queries} introduces the concept of constraint queries, namely partially assigned pre-constraints bearing parametric placeholders that are meant to be valuated by the query answer; \cref{sec:sql:mapping:pre} discusses the foundations at the basis of the translation of constraint queries into SQL statements, successively detailed in \cref{sec:sql:mapping} for standard {\Declare} and \cref{sec:sql:mapping:additionalperspectives} for Multi-Perspective {\Declare}.
+% % %
+% % %
+% % % %To discover declarative process models out of event logs stored in a relational database, we first show how to use formulae that can express declarative constraints as queries to be answered on such logs.
+% % % %This motivates the following definitions.
+% % % %
+% % % %\begin{definition}[Event- and trace-compliance queries]\label{def:declare:mp:compliance:queries}
+% % % %	Let $\psi$ be a formula of {\LTLFOfrag}, the fragment of {\LTLFOf} from which MP-{\Declare} constraints are derived as per \cref{def:ltlfo:declare:mp:fragment}. % and by extension the {\LTLFOf} formula that expresses it, as per \cref{def:declare:mp:constraint}, and $\Actv$ its activation formula, as per \cref{def:declare:mp:activation:target:formulae}.
+% % % %%	Let $L \doteq (E, \LogAlph, C, \ell, \iota, \preccurlyeq,
+% % % %	\widehat{\Delta}, \widehat{\alpha})$ be an event log as per \cref{def:eventlog},
+% % % %	where $E \ni \Evt$ is the set of events,
+% % % %	$C \ni \rho$ is the set of cases, and
+% % % %	$\iota : E \to C$ is the instance function.
+% % % %	As per \cref{def:trace}, $\iota$ binds events to cases defining equivalence classes $ {[\Case] \doteq \{ \Evt \,|\, \iota(\Evt) = \Case \}} $.
+% % % %	Let $T \ni \Trc_{\Case}$ be the set of traces induced by $\iota$ on $L$, where trace $\Trc_{\Case}$ is a restriction of $L$ on events of $[\Case]$.
+% % % %	We define the following queries, on the basis of the $\models$ relation discussed in \cref{def:ltlf:semantics,def:declare:mp:pre:constraint}:
+% % % %	\begin{description}
+% % % %		\item[Event-compliance query]  $\DeQuery{\Evt}[\psi]$: Its \emph{answer} on $L$ is
+% % % %		${ \lbrace \Evt \mid \exists \Case.\ \Evt \in [\Case]  } \land { \Trc_{\Case}, \Evt \models \psi \rbrace }$;
+% % % %		\item[Activated event compliance query]  $\DeQuery{\Evt}[\Cns]_\bullet$: Its \emph{answer} on $L$ is
+% % % %		${ \lbrace \Evt \mid \exists \Case.\ \Evt \in [\Case] } \land { \Trc_{\Case}, \Evt \models \Actv \land \Cns \rbrace }$;
+% % % %		\item[Trace-compliance query]  $\DeQuery{\Case}[\psi]$: Its \emph{answer} on $L$ is
+% % % %		${ \lbrace \Case \mid \Trc_{\Case}, \FirstEl{\Case} \models \psi \rbrace }$.
+% % % %		\item[Activated trace compliance query]  $\DeQuery{\Case}[\Cns]_\bullet$: Its \emph{answer} on $L$ is
+% % % %		${ \lbrace \Case \mid \forall \Evt \exists \Evt.\ \Evt \in [\Case] \to \Trc_{\Case}, \Evt \models \Cns } \land { \Evt \in [\Case] \land \Evt \models \Actv \land \Cns \rbrace }$.
+% % % %	\end{description}
+% % % %\end{definition}
+% % % %\noindent
+% % % %A constraint per se can thus be seen as a query on the event log. An answer to an event- or trace-compliance query is the set of events, or resp.\ cases, %that satisfy it, thus being compliant with the constraint. %, i.e., the set of events that comply with the constraint. %
+% % % %Let us consider as an example the formula corresponding to
+% % % %$ \Cns \doteq \Resp{\taskb}{\taskd} \equiv \lglobally ( \taskb \rightarrow \taskd ) $.
+% % % %The answer to $\DeQuery{\Evt}[\Cns]$ on the example event log excerpt of \cref{table:eventlog} is
+% % % %$\lbrace \underline{{\Evt}_{\Task{4}}}, \underline{{\Evt}_{\Task{5}}}, \underline{{\Evt}_{\Task{6}}} \rbrace$.
+% % % %The answer to $\DeQuery{\Case}[\Cns]$ on the same event log is
+% % % %$\lbrace \underline{{\Case}_{\Task{1}}} \rbrace$.
+% % % %Given another formula
+% % % %$ \Cns' \doteq \Resp{\taskb \land \Attr{Score} > \text{50} }{\taskd} \equiv \lglobally ( ( \taskb \land \Attr{Score} > \text{50} ) \rightarrow \taskd ) $
+% % % %we have that
+% % % %the answer to $\DeQuery{\Evt}[\Cns]$ is
+% % % %$\lbrace \underline{{\Evt}_{\Task{1}}}, \underline{{\Evt}_{\Task{2}}}, \ldots, \underline{{\Evt}_{\Task{6}}} \rbrace$,
+% % % %as expected due to the anti-monotonicity \cref{thm:check-expansion:activation:anti-monotonicity} -- here the activation is check-expanded with $\Attr{Score} %> \text{50}$ with respect to $\Cns$.
+% % % %Likewise,
+% % % %the answer to $\DeQuery{\Case}[\Cns]$ is
+% % % %$\lbrace \underline{{\Case}_{\Task{1}}}, \underline{{\Case}_{\Task{2}}} \rbrace$, accordingly.
+% % % %
+% % % % We remark here that the aforementioned queries can be extended to any {\LTLf} formula and, a fortiori, to SP-{\Declare}.
+% % %
+% % % %Also queries non strictly related to the templates of (MP-){\Declare} can be formulated.
+% % % %In particular, we shall make use of the following queries in the remainder of this paper.
+% % % %Given a constraint with activation formula $\Actv$, the answer to $\DeQuery{\Evt}[\Actv]$ consists of all the events activating a constraint;
+% % % %the answer to $\DeQuery{\Case}[\lfuture \Actv]$ consists of all the \emph{cases} in which a constraint was activated at least once.
+% % % %The answer to $\DeQuery{\Case}[\ltrue]$ is the set of all the cases of a log, namely $C$.

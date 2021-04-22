@@ -1,0 +1,63 @@
+\newcommand{\figspace}{\vspace*{-0.4cm}}
+\newcommand{\powerset}[1]{\mbox{I\hspace*{-.2em}P}(#1)}
+
+%\newcommand{\comment}[2]{\footnote{\textbf{(#1)}: \textsc{#2}}}
+%\newcommand{\notafc}[1]{\comment[Federico]{#1}}
+%\newcommand{\notamm}[1]{\comment[Marco M.]{#1}}
+%\newcommand{\todo}[1]{\textsc{\textbf{\textcolor{red}{#1}}}}
+\hyphenation{infra-structure}
+%\newtheorem{algorithm}{Algorithm}
+\def\AND{\wedge}
+\def\OR{\vee}
+\def\XOR{\mathit{XOR}}
+\def\NULL{\mathit{null}}
+\def\pre#1{\ensuremath{-{#1}}}
+\def\post#1{\ensuremath{{#1}\kern-.05ex-}}
+
+\newcommand{\twofigs}[7]{{
+   \begin{figure}[!h]
+      \vspace{-0.4cm}
+      \hfill
+      \begin{minipage}[t]{0.48\textwidth}
+           \centering
+           \epsfxsize=#7\textwidth
+           \centerline{\epsfbox{#1}}
+           \vspace{-0.2cm}
+           \caption{#2} \label{#3}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.48\textwidth}
+           \centering
+           \epsfxsize=#7\textwidth
+           \centerline{\epsfbox{#4}}
+           \vspace{-0.2cm}
+           \caption{#5} \label{#6}
+      \end{minipage}
+      \hfill
+   \end{figure} }}
+
+%\pagestyle{plain}
+
+
+\newcommand{\sm}{\emph{miner}\xspace}
+\newcommand{\smp}{\emph{miner+}\xspace}
+\newcommand{\smm}{\emph{ms miner}\xspace}
+\newcommand{\smmp}{\emph{ms miner+}\xspace}
+\newcommand{\Apriori}{\emph{Apriori algorithm}\xspace}
+\newcommand{\sequence}{\emph{Sequence Analysis}\xspace}
+\newcommand{\pruning}{\emph{Pruning}\xspace}
+\newcommand{\automata}{\textsc{Aut. w/ Apriori}\xspace}
+\newcommand{\seq}{\textsc{Sequence}\xspace}
+\newcommand{\apriseq}{\textsc{Seq. w/ Apriori}\xspace}
+\newtheorem{mydef}{Definition}
+\DeclareCaptionType{copyrightbox}
+
+
+%%% Some magic with TABLES
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\newcolumntype{Y}{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}X}
+\newcolumntype{Z}{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}X}
+%\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}

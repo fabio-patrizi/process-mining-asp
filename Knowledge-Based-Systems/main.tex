@@ -1,0 +1,179 @@
+\documentclass[review]{elsarticle}
+
+\usepackage{graphicx}
+
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\usepackage{xspace}
+\usepackage{tikz}
+
+\usepackage{amsfonts}
+\usepackage[title]{appendix}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{booktabs}
+\usepackage[defblank]{paralist}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\usepackage{amssymb}
+\usepackage{rotating}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{verbatim}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage{rotating}
+\usepackage{enumitem}
+%\usepackage{arydshln}
+% \usepackage{ngerman}
+%\usepackage{hyperref}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[clock,electronic]{ifsym}
+\usepackage{eurosym}
+\usepackage{subfig}
+\usepackage{xspace}
+\usepackage[defblank]{paralist}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{amssymb}  % additional symbols (there are more packages)
+\usepackage{gensymb}
+\usepackage{makecell}
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\newcommand{\removelatexerror}{\let\@latex@error\@gobble}
+\usepackage{wrapfig}
+%\usepackage[pdftex]{graphicx} % graphics packages
+%\usepackage[pdftex]{color}    % color packages
+\usepackage{times}
+%\usepackage{todonotes}		% todonotes
+\usepackage{dsfont}
+
+\newtheorem{example}{Example}
+
+%% CUSTOM MACROS AND PACKAGES
+\usetikzlibrary{DECLARE}
+\usepackage{declare-marco}
+\input{addon/claudio-macros}
+\input{addon/claudio-declare-macros}
+\input{macros2}
+\newcommand{\condec}{Declare\xspace}
+\include{macros}
+
+\usepackage{lineno,hyperref}
+\modulolinenumbers[5]
+
+\journal{Journal of \LaTeX\ Templates}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Elsevier bibliography styles
+%%%%%%%%%%%%%%%%%%%%%%%
+%% To change the style, put a % in front of the second line of the current style and
+%% remove the % from the second line of the style you would like to use.
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Numbered
+%\bibliographystyle{model1-num-names}
+
+%% Numbered without titles
+%\bibliographystyle{model1a-num-names}
+
+%% Harvard
+%\bibliographystyle{model2-names.bst}\biboptions{authoryear}
+
+%% Vancouver numbered
+%\usepackage{numcompress}\bibliographystyle{model3-num-names}
+
+%% Vancouver name/year
+%\usepackage{numcompress}\bibliographystyle{model4-names}\biboptions{authoryear}
+
+%% APA style
+%\bibliographystyle{model5-names}\biboptions{authoryear}
+
+%% AMA style
+%\usepackage{numcompress}\bibliographystyle{model6-num-names}
+
+%% `Elsevier LaTeX' style
+\bibliographystyle{elsarticle-num}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Declarative Process Mining with SAT}
+%\tnotetext[mytitlenote]{Fully documented templates are available in the elsarticle package on \href{http://www.ctan.org/tex-archive/macros/latex/contrib/elsarticle}{CTAN}.}
+
+%% Group authors per affiliation:
+\author[1]{Fabrizio Maria Maggi}
+%\address{Free University of Bozen-Bolzano}
+\ead{maggi@inf.unibz.it}
+\address[1]{Free University of Bozen-Bolzano}
+
+\author[2]{Andrea Marrella}
+%\address{Sapienza University of Rome}
+\ead{marrella@diag.uniroma1.it}
+
+\author[2]{Fabio Patrizi}
+%\address{Sapienza University of Rome}
+\ead{patrizi@diag.uniroma1.it}
+
+\address[2]{Sapienza University of Rome}
+
+
+%\author[3]{Vasyl Skydanienko}
+%\address{University of Tartu}
+%\ead{skydanienko@ut.ee}
+%\address[3]{University of Tartu}
+
+%\fntext[myfootnote]{Since 1880.}
+%
+%% or include affiliations in footnotes:
+%\author[mymainaddress,mysecondaryaddress]{Elsevier Inc}
+%\ead[url]{www.elsevier.com}
+%
+%\author[mysecondaryaddress]{Global Customer Service\corref{mycorrespondingauthor}}
+%\cortext[mycorrespondingauthor]{Corresponding author}
+
+%
+
+
+%\address[mysecondaryaddress]{360 Park Avenue South, New York}
+
+\begin{abstract}
+Process Mining is a family of techniques for analyzing business process execution data recorded in event logs. Process models can be obtained as output of automated process discovery techniques or can be used as input of techniques for conformance checking or model enhancement. In Declarative Process Mining, process models are represented as sets of temporal constraints (instead of procedural descriptions where all control-flow details are explicitly modeled). An open research direction in Declarative Process Mining is whether multi-perspective specifications can be supported, i.e., specifications that not only describe the process behavior from the control-flow point of view, but also from other perspectives like data or time. In this paper, we address this question by considering SAT as a solving technology for a number of classical problems in Declarative Process Mining, namely log generation, conformance checking and temporal query checking. To do so, we first express each problem as a suitable FO theory whose bounded models represent solutions to the problem, and then find a bounded model of such theory by compilation into SAT.
+%This is actually done by resorting to Alloy, a tool for finding bounded models of FO theories via compilation into SAT.
+%Notably, the Alloy output, i.e., the SAT instance, can be provided as input to any SAT solver, thus making any performance optimization in SAT directly available to Declarative Process Mining.
+%By using Alloy we obtain a full-fledged tool that can solve all the existing problems arising in multi-perspective Declarative Process Mining. We report an experimental evaluation to test the feasibility of the approach.
+
+
+%\keywords{Process Mining  \and SAT \and Alloy \and Multi-Perspective Models \and Declarative Models.}
+\end{abstract}
+
+\begin{keyword}
+Process Mining  \sep SAT \sep Alloy \sep Multi-Perspective Models \sep Declarative Models
+\end{keyword}
+
+\end{frontmatter}
+
+\linenumbers
+
+%\input{00-abstract}
+\input{01-introduction}
+\input{02-preliminaries}
+\input{03-problems}
+\input{04-alloy-sat}	
+\input{05-experiments}
+\input{06-related-work}
+
+
+%\section*{References}
+
+\bibliography{references,mainbib,main-bib,libraryFiltered,diciccio,bpm,biblio,bib}
+
+\end{document} 

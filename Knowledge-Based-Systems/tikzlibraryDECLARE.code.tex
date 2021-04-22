@@ -1,0 +1,90 @@
+%
+% This is the DECLARE TikZ library by Claudio Di Ciccio is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+% This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.
+%
+% Author: Claudio Di Ciccio
+% Website: www.diciccio.net
+% Date: 2017/02/08
+%
+\usetikzlibrary{arrows.meta,decorations.markings}
+\def\DTZU {2ex}
+\tikzset{
+ DECLARE.task/.style={
+  rounded corners=1,
+  minimum width=3em,
+  minimum height=1ex,
+  draw
+ },
+ DECLARE.existcon/.style={
+  label={[style=draw,yshift=-1\pgflinewidth]above:{\tiny \textit{#1}}}
+ },
+ DECLARE.neg/.style={
+  semithick,
+  postaction={decorate,decoration={markings,
+   mark=at position .5 with {\arrow[xshift=0.15*\DTZU]{Bar[width=1.5*\DTZU]}},
+   mark=at position .5 with {\arrow[xshift=-0.15*\DTZU]{Bar[width=1.5*\DTZU]}}
+  }}
+ },
+ DECLARE.resex/.style={
+  semithick,
+  {Circle[length=1*\DTZU,width=1*\DTZU]}-,
+  shorten <=-0.5*\DTZU
+ },
+ DECLARE.resp/.style={
+  semithick,
+  {Circle[length=1*\DTZU,width=1*\DTZU]}-{Triangle[length=1*\DTZU,width=1*\DTZU]},
+  shorten <=-0.5*\DTZU
+ },
+ DECLARE.alt.resp/.style={
+  semithick,
+  {Circle[length=1*\DTZU,width=1*\DTZU]}-{Triangle[length=1*\DTZU,width=1*\DTZU]},
+  shorten <=-0.5*\DTZU,
+  double distance=0.25*\DTZU
+ },
+ DECLARE.chn.resp/.style={
+  semithick,
+  preaction={draw, shorten <= -0.5*\DTZU, double distance=0.25*\DTZU, {Circle[length=1*\DTZU,width=1*\DTZU]}-{Triangle[length=1*\DTZU,width=1*\DTZU]}},
+  {-{Triangle[length=1*\DTZU,width=1*\DTZU]}}
+ },
+ DECLARE.prec/.style={
+  semithick,
+  {-{Triangle[length=1*\DTZU,width=1*\DTZU]Circle[length=1*\DTZU,width=1*\DTZU]}},
+  shorten >=-0.5*\DTZU
+ },
+ DECLARE.alt.prec/.style={
+  semithick,
+  postaction={draw, shorten >= 0.5*\DTZU, double distance=0.25*\DTZU, {-{Triangle[length=1*\DTZU,width=1*\DTZU]}}},
+  {-{Circle[length=1*\DTZU,width=1*\DTZU]}},
+  shorten >= -0.5*\DTZU
+ },
+ DECLARE.chn.prec/.style={
+  semithick,
+  preaction={draw, shorten >= 0.5*\DTZU, double distance=0.25*\DTZU, {-{Triangle[length=1*\DTZU,width=1*\DTZU]}}},
+  {-{Circle[length=1*\DTZU,width=1*\DTZU]}},
+  shorten >= -0.5*\DTZU
+ },
+ DECLARE.succ/.style={
+  semithick,
+  {Circle[length=1*\DTZU,width=1*\DTZU]}-{Triangle[length=1*\DTZU,width=1*\DTZU]Circle[length=1*\DTZU,width=1*\DTZU]},
+  shorten <=-0.5*\DTZU,
+  shorten >=-0.5*\DTZU
+ },
+ DECLARE.coex/.style={
+  semithick,
+  {Circle[length=1*\DTZU,width=1*\DTZU]}-{Circle[length=1*\DTZU,width=1*\DTZU]},
+  shorten <=-0.5*\DTZU,
+  shorten >=-0.5*\DTZU
+ },
+ DECLARE.alt.succ/.style={
+  semithick,
+  postaction={draw, shorten >= 0.5*\DTZU, shorten <= -0.5*\DTZU, double distance=0.25*\DTZU, {Circle[length=1*\DTZU,width=1*\DTZU]}-{Triangle[length=1*\DTZU,width=1*\DTZU]}},
+  {-{Circle[length=1*\DTZU,width=1*\DTZU]}},
+  shorten >= -0.5*\DTZU
+ },
+ DECLARE.chn.succ/.style={
+  semithick,
+  preaction={draw, shorten >= 0.5*\DTZU, shorten <= -0.5*\DTZU, double distance=0.25*\DTZU, {Circle[length=1*\DTZU,width=1*\DTZU]}-{Triangle[length=1*\DTZU,width=1*\DTZU]}},
+  {-{Circle[length=1*\DTZU,width=1*\DTZU]}},
+  shorten >= -0.5*\DTZU
+ }
+}

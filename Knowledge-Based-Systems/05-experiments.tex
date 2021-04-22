@@ -1,0 +1,35 @@
+\section{Experiments}
+We implemented the framework described in this paper in a tool available at \url{https://tinyurl.com/y5773gdz}. The efficiency of the tool was tested by performing several experiments measuring the execution times needed for the tool to perform tasks of different complexity.
+Each measured execution time was averaged over 3 runs. The experiments were conducted on a single core of a 64-bit 2.2 Ghz Intel Core i5-5200U processor with 16GB of RAM. The SAT solver used was SAT4J.
+
+In order to assess the performance of the log generation approach, we generated logs with different characteristics using different Declare models.
+In a first set of experiments, we sampled the generation times that resulted by varying the following parameters:
+\begin{inparaenum}[\itshape(i)\upshape]
+\item the number of constraints in the Declare model (5, 10, 15, and 20 constraints),
+\item the number of events per trace (5, 10, 15, 20, 25, 30, 40, and 50 events), and
+\item the number of traces in the log (100, 250, 500, 1000, 2500, 5000, and 10\,000 traces).
+\end{inparaenum}
+The number of activities in the Declare models is fixed to 10. The constraints employed are all of type \emph{response}. The constraints are considered without data conditions, with activation conditions, and with activation and correlation conditions. 
+%The results of our experimentation are summarized in Tables~1-7.
+For space limitations, we cannot include the details of the wide experimentation carried out. In the following, we summarize the main findings.\footnote{The reader is referred to \url{https://tinyurl.com/wqmkwqx} for the detailed results of the experimentation.}
+
+%\input{tables/table_generator_NODATA}
+%\input{tables/table_generator_DATAACT}
+%\input{tables/table_generator_DATACORR}
+%\input{tables/table_generator_VARACTDATACORR}
+%\input{tables/table_generator_QUERYONLYCONTROLFLOW}
+%\input{tables/table_generator_QUERYONEACTIVATION}
+%\input{tables/table_generator_QUERYTWOACTIVATIONS}
+
+
+When using a Declare model including constraints without data conditions, in the worst case, namely to generate a log of $10\,000$ traces of length 50 from a model containing 20 constraints, the execution time is slightly above 2 minutes. When using constraints with activation conditions, the execution time in the worst case is of around 4.5 minutes. In the case of constraints with activation and correlation conditions the execution time in the worst case is of 5.5 minutes.
+
+We also tested the trend of the execution times when varying the alphabet size (5, 10, 15, and 20 activities) of the Declare models (without data conditions). The number of constraints in these experiments is fixed to 20. As expected, for increasing alphabet sizes, the execution times increase. In the worst case, namely to generate a log of $10\,000$ traces of length 50 from a model containing 20 activities, the execution time is of around 6 minutes.
+
+Finally, we executed a set of experiments to test the performance of query checking.\footnote{We did not assess the conformance checking tool explicitly since, as already mentioned, conformance checking is a special case of query checking.} We sampled the query times by varying the following parameters:
+\begin{inparaenum}[\itshape(i)\upshape]
+\item the type of query,
+\item the number of events in the input trace (20, 25, 30, 40, and 50 events), and
+\item the alphabet of possible activities (5, 10, 15, and 20 activities).
+\end{inparaenum}
+The queries cover all the standard Declare constraints and are considered without data conditions, with activation conditions, and with activation and correlation conditions. For all query types the execution times range from few milliseconds to 10 seconds. The only exception is the case of the queries of type \emph{alternate} that require, in the worst case, more than 1.5 minutes.

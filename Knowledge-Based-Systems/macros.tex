@@ -1,0 +1,425 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONFIGURATION OF FONTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\mathname}[1]{\ensuremath{\textit{#1}}}
+\newcommand{\textmath}[1]{\mathname{#1}}
+\newcommand{\propername}[1]{\text{\textsf{\small #1}}\xspace}
+
+\newcommand{\actionfont}[1]{\text{\textsc{#1}}}
+\newcommand{\fluentfont}[1]{\mathname{#1}}
+
+\newcommand{\astar}{\propername{A*}}
+\newcommand{\JPS}{\propername{JPS}}
+\newcommand{\HPA}{\propername{HPA*}}
+
+\newcommand{\invAStar}{\propername{Inv-A*}}
+\newcommand{\invJPS}{\propername{Inv-JPS}}
+\newcommand{\invHPA}{\propername{Inv-HPA*}}
+
+%%\newtheorem{example}{Example}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GENERAL NOTATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\compl}[1]{\overline{#1}}
+\newcommand{\quotes}[1]{{\lq\lq #1\rq\rq}}
+\newcommand{\Set}[1]{\left\{#1\right\}}
+\newcommand{\bigmid}{\Big|}
+\newcommand{\card}[1]{|{#1}|}                     % cardinality of a set
+\newcommand{\Card}[1]{\left| #1\right|}
+\newcommand{\cards}[1]{\sharp #1}
+\newcommand{\sub}[1]{[#1]}
+\newcommand{\config}[1]{\tuple{#1}}	% configuration
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\tup}[1]{\langle #1\rangle}
+% A symbol with something on top and under: \underoverset{under}{above}{text}
+\newcommand{\underoverset}[3]{\underset{#1}{\overset{#2}{#3}}}
+
+% Relations
+\newcommand{\isdef}{\hbox{$\stackrel{\mbox{\tiny def}}{=}$}}
+
+% Symbols
+\newcommand{\powerset}{\mathbb{P}}
+\newcommand{\NatN}{\Math{\mathbb{N}_0}} % naturals+0
+\newcommand{\Nat}{\Math{\mathbb{N}}}
+\newcommand{\mgu}{\modesf{mgu}}
+\newcommand{\complexsub}{\modesf{cplex}}
+
+% True and False
+%\newcommand{\true}{\mathtt{true}}
+%\newcommand{\false}{\mathtt{false}}
+% \newcommand{\TRUE}{\uppercase{\true}}
+% \newcommand{\FALSE}{\uppercase{\false}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LOGICAL FORMULAS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\formulas}[1]{\mathbb{F}_#1}
+\newcommand{\propositions}{\mathbb{P}}
+\newcommand{\literals}[1]{\mathbb{L}_#1}
+\newcommand{\FFF}{\mathbb{F}}
+\newcommand{\PPP}{\mathbb{P}}
+\newcommand{\NNN}{\mathbb{N}}
+\newcommand{\LLL}{\mathbb{L}}
+\newcommand{\true}{\mathsf{TRUE}}
+\newcommand{\false}{\mathsf{FALSE}}
+\newcommand{\True}{\mathtt{True}}
+\newcommand{\False}{\mathtt{False}}
+\newcommand{\T}{\mathtt{T}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\sat}{\mathcal{SAT}}
+\newcommand{\no}[1]{\neg #1}
+\newcommand{\prop}{\mathname{Prop}} %extracts variables from the formula
+% ADL
+\newcommand{\Pre}{\textit{Pre}}
+\newcommand{\Eff}{\textit{Eff}}
+\newcommand{\eff}{\mathname{eff}} %effect
+\newcommand{\Cond}{\textit{Cond}}
+
+\newcommand{\result}{\mbox{\emph{next}}}
+\newcommand{\resultExec}{\mbox{\emph{result}}}
+
+\newcommand{\EventCandidates}{\mathname{EventCand}\xspace}
+\newcommand{\ExtendNet}{\mathname{ExtNet}\xspace}
+\newcommand{\ON}{\mathname{ON}\xspace}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CALIGRAPHIC LETTERS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathcal{E}}
+%\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\renewcommand{\H}{\mathcal{H}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\K}{\mathcal{K}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathcal{N}}
+\renewcommand{\O}{\mathcal{O}}
+\renewcommand{\P}{\mathcal{P}}
+\newcommand{\Q}{\mathcal{Q}}
+\newcommand{\R}{\mathcal{R}}
+\renewcommand{\S}{\mathcal{S}}
+%\newcommand{\T}{\mathcal{T}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\BE}{{\mathcal{B}, \mathcal{E}}}
+\newcommand{\DB}{{\mathcal{DB}}}
+\newcommand{\DS}{{\mathcal{DS}}}
+\newcommand{\Int}{{\mathcal{I}}}
+\newcommand{\Flts}{{\mathcal{F}}}
+
+\newcommand{\adom}{{adom}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% MACROS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\Lsc}{\mathcal{L}_{\mathname{sitcalc}}}
+\newcommand{\nullc}{\mathname{null}}
+\newcommand{\Next}{\mathname{next}}
+\newcommand{\Null}{\mathname{null}}
+%\newcommand{\Succ}{\mathname{succ}}
+\newcommand{\Insert}{\mathname{Insert}}
+\newcommand{\InsertNullB}{\mathname{InsertNull2}}
+\newcommand{\DeleteB}{\mathname{Delete2}}
+\newcommand{\doc}{\mathname{do}}
+
+\newcommand{\ap}{\mathname{ap}}
+\newcommand{\una}{\mathname{una}}
+\newcommand{\ssa}{\mathname{ssa}}
+
+
+\newcommand{\concat}{\cdot}
+\newcommand{\goto}[1]{\stackrel{#1}{\longrightarrow}}
+\newcommand{\tuple}[1]{\tup{#1}}            % tuple
+
+
+
+%%%%%%% ENUMERATION
+\newcommand{\myi}{\emph{(i)}\xspace}
+\newcommand{\myii}{\emph{(ii)}\xspace}
+\newcommand{\myiii}{\emph{(iii)}\xspace}
+\newcommand{\myiv}{\emph{(iv)}\xspace}
+\newcommand{\myv}{\emph{(v)}\xspace}
+\newcommand{\myvi}{\emph{(vi)}\xspace}
+
+\newcommand{\defterm}[1]{\ul{\textit{#1}}}	% requires soul package for \ul{} underlying
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 	PETRI NET UNFOLDING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \newcommand{\pnet}{\mathname{pnet}}
+\newcommand{\pnet}{\textsf{\small pnet}}
+% \newcommand{\readarcs}{\mathname{readarcs}}
+\newcommand{\readarcs}{\textsf{\small persprec}}
+
+\newcommand{\liftRight}{\mathname{liftRight}}
+\newcommand{\liftLeft}{\mathname{liftLeft}}
+
+\newcommand{\rank}{\mathname{rank}}
+\newcommand{\Unf}{\mathname{Unf}}
+\newcommand{\df}{DF}
+\newcommand{\dt}{DT}
+\newcommand{\rf}{RF}
+\newcommand{\rt}{RT}
+
+
+\newcommand{\marking}[1]{\mbox{\textsf{\small Mark}}(#1)}
+
+% \theoremstyle{nonumberplain}
+% \newtheorem{theorem}{Theorem}[section]
+
+\newcommand{\ERVFLY}{\textsf{\small  ERV-Fly}}
+\newcommand{\ERVFLYP}{\Math{\mbox{\textsf{\small ERV-Fly}}_{min}}}
+
+
+
+%\newcommand{\action}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\cst}[1]{\mathtt{#1}}
+\newcommand{\nat}{\mathbb{N}}
+
+\newcommand{\prepl}[1]{{}^{\bullet}{#1}}
+\newcommand{\postpl}[1]{{#1}^{\bullet}}
+
+
+
+\newcommand{\Ctrl}{\textsc{Ctrl}}
+\newcommand{\doingx}[1]{\Math{\textit{doing}_{#1}}}
+\newcommand{\dox}[1]{\Math{\textit{do}_{#1}}}
+\newcommand{\finx}[1]{\Math{\textit{fin}_{#1}}}
+\newcommand{\start}[1]{\Math{\textit{start}_{#1}}}
+\newcommand{\complete}[1]{\Math{\textit{complete}_{#1}}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PETRI NETS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\CA}{\mathname{CA}}
+\newcommand{\RA}{\mathname{RA}}
+\newcommand{\FF}{\mathname{F}}
+\newcommand{\RR}{\mathname{R}}
+\newcommand{\GG}{\mathname{G}}
+\newcommand{\Aset}{\mathname{A}}
+\newcommand{\Pset}{\mathname{P}}
+\newcommand{\Tset}{\mathname{T}}
+\newcommand{\Vset}{\mathname{V}}
+
+\newcommand{\Var}{\mathname{Var}}
+\newcommand{\val}{\mathname{val}}
+\newcommand{\expr}{\mathtt{expr}}
+\newcommand{\net}{\mathcal{N}}
+
+
+\newcommand{\marked}[1]{\overline{#1}}
+
+\newcommand{\enabled}[2]{#1 [#2\rangle}
+\newcommand{\allreach}[1]{[#1\rangle}
+\newcommand{\fire}[4]{\enabled{#1}{#2}{#3}#4}
+\newcommand{\guard}[1]{[\![#1]\!]}
+%\newcommand{\guard}[1]{\ensuremath{\mathtt{#1}}\xspace} % gate name
+
+\newcommand{\col}[1]{\ensuremath{\textsc{#1}}\xspace} %color name
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%MANUF TASKS
+
+
+\newcommand{\equip}{\taskfont{equip}}
+\newcommand{\equipx}{\taskfont{equip\_x}}
+\newcommand{\tinsert}{\taskfont{insert}}
+\newcommand{\applyglue}{\taskfont{apply\_glue}}
+\newcommand{\attach}{\taskfont{attach}}
+\newcommand{\equipd}{\taskfont{eqp\_d}}
+\newcommand{\equipr}{\taskfont{eqp\_r}}
+\newcommand{\equipeng}{\taskfont{eqp\_eng}}
+\newcommand{\equipg}{\taskfont{eqp\_g}}
+\newcommand{\equipf}{\taskfont{eqp\_f}}
+\newcommand{\equiph}{\taskfont{eqp\_h}}
+\newcommand{\pressure}{\taskfont{pressure}}
+\newcommand{\pressureh}{\taskfont{pressure\_hollow}}
+\newcommand{\pressuref}{\taskfont{pressure\_flat}}
+\newcommand{\pressurex}{\taskfont{pressure\_x}}
+\newcommand{\unequip}{\taskfont{unequip}}
+\newcommand{\rivet}{\taskfont{rivet}}
+\newcommand{\reload}{\taskfont{reload}}
+\newcommand{\tremove}{\taskfont{remove}}
+\newcommand{\vtest}{\taskfont{visual\_test}}
+\newcommand{\ftest}{\taskfont{force\_test}}
+\newcommand{\hold}{\taskfont{hold}}
+\newcommand{\reaming}{\taskfont{reaming}}
+\newcommand{\holdplace}{\taskfont{hold\_in\_place}}
+\newcommand{\place}{\taskfont{place}}
+\newcommand{\talign}{\taskfont{align}}
+\newcommand{\drill}{\taskfont{drill}}
+\newcommand{\machinedrill}{\taskfont{machine\_drill}}
+\newcommand{\robotdrill}{\taskfont{robot\_drill}}
+\newcommand{\cellstore}{\taskfont{out\_cell}}
+\newcommand{\store}{\taskfont{store}}
+\newcommand{\position}{\taskfont{position}}
+\newcommand{\cellloads}{\taskfont{in\_cell}}
+\newcommand{\loads}{\taskfont{load}}
+\newcommand{\separate}{\taskfont{separate}}
+\newcommand{\forcepull}{\taskfont{force\_pull}}
+\newcommand{\loadsmaterial}{\taskfont{load\_material}}
+\newcommand{\loadh}{\taskfont{load\_hv}}
+\newcommand{\enter}{\taskfont{enter}}
+\newcommand{\exit}{\taskfont{exit}}
+\newcommand{\screw}{\taskfont{screw}}
+\newcommand{\inspect}{\taskfont{inspect}}
+\newcommand{\clamp}{\taskfont{clamp}}
+\newcommand{\mountbit}{\taskfont{mount\_bit}}
+\newcommand{\operatemachine}{\taskfont{operate\_machine}}
+\newcommand{\engrave}{\taskfont{engrave}}
+\newcommand{\fasten}{\taskfont{fasten}}
+\newcommand{\unfasten}{\taskfont{unfasten}}
+%\newcommand{\rotate}{\taskfont{rotate}}
+\newcommand{\spray}{\taskfont{spray}}
+\newcommand{\ProdRes}{\R}
+
+\newcommand{\videocapture}{\taskfont{video\_capture}}
+
+
+\newcommand{\nname}[1]{\small{\textbf{#1}}}
+
+\newcommand{\nop}{\taskfont{nop}}
+
+\newcommand{\taskin}{in}
+\newcommand{\taskout}{out}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proper names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\Golog}{\propername{Golog}}
+\newcommand{\GologSpeak}{\propername{GologSpeak}}
+\newcommand{\DGolog}{\propername{DGolog}}
+\newcommand{\sGolog}{\propername{sGolog}}
+\newcommand{\ConGolog}{\propername{ConGolog}}
+\newcommand{\IndiGolog}{\propername{IndiGolog}}
+\newcommand{\LeGolog}{\propername{LeGolog}}
+\newcommand{\DTGolog}{\propername{DTGolog}}
+\newcommand{\Prolog}{\propername{Prolog}}
+\newcommand{\AgentSpeak}{\propername{AgentSpeak}}
+\newcommand{\JASON}{\propername{Jason}}
+\newcommand{\CANMINUS}{\propername{\CAN$^{\A}$}}
+\newcommand{\CANMINUST}{\propernametiny{Can$^{\cal C}$}}
+\newcommand{\CAN}{\propername{CAN}}
+\newcommand{\CANT}{\propernametiny{Can}}
+\newcommand{\CANPLAN}{\propername{CANPlan}}
+\newcommand{\CANPLANT}{\propernametiny{CanPlan}}
+\newcommand{\CANPLANII}{\propername{CanPlan2}}
+\newcommand{\CANPLANOR}{\propername{Can(Plan)}}
+\newcommand{\CANGOAL}{\propername{CanGoal}}
+\newcommand{\JACK}{\propername{Jack}}
+\newcommand{\JACKTM}{\propername{Jack\texttrademark}}
+\newcommand{\JAM}{\propername{JAM}}
+\newcommand{\PRS}{\propername{PRS}}
+\newcommand{\SPARK}{\propername{SPARK}}
+\newcommand{\RAP}{\propername{Rap}}
+\newcommand{\dMARS}{\propername{dMARS}}
+\newcommand{\TAPL}{\propername{3APL}}
+\newcommand{\DAPL}{\propername{2APL}}
+\newcommand{\GOALBDI}{\propername{GOAL}}
+\newcommand{\JSHOP}{\propername{JSHOP}}
+\newcommand{\JSHOPII}{\propername{JSHOP2}}
+\newcommand{\ASHOP}{\propername{A-SHOP}}
+\newcommand{\SHOP}{\propername{SHOP}}
+\newcommand{\SHOPII}{\propername{SHOP2}}
+\newcommand{\ACT}{\propername{ACT}}
+\newcommand{\SIPEII}{\propername{SIPE-2}}
+\newcommand{\OPLANII}{\propername{O-PLAN2}}
+\newcommand{\Retsina}{\propername{Retsina}}
+\newcommand{\IPEM}{\propername{IPEM}}
+\newcommand{\SAGE}{\propername{Sage}}
+\newcommand{\DECAF}{\propername{Decaf}}
+\newcommand{\PROPICE}{\propername{Propice-Plan}}
+\newcommand{\CYPRESS}{\propername{Cypress}}
+\newcommand{\CPEF}{\propername{CPEF}}
+\newcommand{\JADEX}{\propername{JADEX}}
+\newcommand{\IMPACT}{\propername{IMPACT}}
+\newcommand{\PDT}{\propername{PDT}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Situation Calculus macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Sitcalc Golog/ConGolog/IndiGolog programs
+\newcommand{\mif}{\mbox{\bf if}}
+\newcommand{\mwhile}{\mbox{\bf while}}
+\newcommand{\mreturn}{\mbox{\bf return}}
+\newcommand{\mthen}{\mbox{\bf then}}
+\newcommand{\melse}{\mbox{\bf else}}
+\newcommand{\mdo}{\mbox{\bf do}}
+\newcommand{\mnoOp}{\mbox{\bf $noOp$}}
+\newcommand{\mproc}{\mbox{\bf proc}}
+\newcommand{\mend}{\mbox{\bf end}}
+\newcommand{\mendproc}{\mbox{\bf endProc}}
+\newcommand{\mendif}{\mbox{\bf endIf}}
+\newcommand{\mendwhile}{\mbox{\bf endWhile}}
+\newcommand{\mendfor}{\mbox{\bf endFor}}
+\newcommand{\mfor}{\mbox{\bf for}}
+\def\prparallel{\mathrel{\rangle\!\rangle}}
+\def\supparallel{\mathord{|\!|}}
+\newcommand{\ndet}{\mid}
+%\newcommand{\choice}[1]{\pi{#1}.}
+\newcommand{\conc}{\mbox{$\parallel$}}
+\newcommand{\tconc}{\mbox{$\space|||\space$}}
+\newcommand{\pconc}{\mbox{$\prparallel$}}
+\newcommand{\search}{\mbox{$\Sigma$}}
+\newcommand{\searchO}{\mbox{$\Sigma_o$}}
+\newcommand{\searchOM}{\mbox{$\Sigma_o^M$}}
+\newcommand{\searchCR}{\mbox{$\Sigma_{cr}$}}
+\newcommand{\searchR}{\mbox{$\Sigma_{r}$}}
+\newcommand{\searchM}{\mbox{$\Sigma^M$}}
+\newcommand{\searchC}{\mbox{$\Sigma_c$}}
+\newcommand{\searchCM}{\mbox{$\searchC^M$}}
+\newcommand{\searchCB}{\mbox{$\Sigma_{cb}$}}
+\newcommand{\searchD}{\mbox{$\Delta$}}
+\newcommand{\searchE}{\mbox{$\Delta_e$}}
+\newcommand{\searchEM}{\mbox{$\Delta_e^M$}}
+\newcommand{\searchL}{\mbox{$\Delta_l$}}
+\newcommand{\searchER}{\mbox{$\Delta_r$}}
+\newcommand{\searchERM}{\mbox{$\Delta_r^M$}}
+\newcommand{\mnt}{\mbox{$mnt$}}
+
+
+%%% Knowledge in sitcalc
+\newcommand{\Know}{\mbox{\bf Know}}
+\newcommand{\KWhether}{\mbox{\bf KWhether}}
+\newcommand{\Kref}{\mbox{\bf KRef}}
+\newcommand{\nows}{{\hbox{\small\sf now}}}
+\newcommand{\now}{{\mbox{\sf now}}}
+
+
+% IndiGolog macros
+\newcommand{\Sensed}{\textmath{Sensed}}
+\newcommand{\hend}{\textmath{end}}
+\newcommand{\Trans}{\textmath{Trans}}
+\newcommand{\Final}{\textmath{Final}}
+\newcommand{\Poss}{\textmath{Poss}}
+\newcommand{\Transobs}{\textmath{TransObs}}

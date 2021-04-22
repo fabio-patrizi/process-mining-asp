@@ -1,0 +1,127 @@
+%!TEX root = ../main.tex
+\renewcommand{\arraystretch}{1.2}
+\begin{scriptsize}
+\begin{tabular}{ l p{5cm} c}
+\toprule
+\textbf{Constraint} & \textbf{Explanation} & \textbf{Notation} \\  % bcaaccbbbaba
+\midrule
+\multicolumn{3}{l}{Existence constraints}\\
+\midrule
+$\Exi{n}{\paramx}$ & % [^$2]*($2[^$2]*){$1,}[^$2]*
+Activity $\paramx$ occurs at least $n$ times &
+% & {\paramx} & --<w
+\input{figures/declare-tikz/existence}
+\\
+$\Abse{m+1}{\paramx}$ & % [^$2]*($2[^$2]*){0,$max}[^$2]*
+$\paramx$ occurs at most $m$ times &
+% & {\paramx} & --
+\input{figures/declare-tikz/absence}
+\\
+$\Ini{\paramx}$ &
+{\paramx} is the \emph{first} to occur &
+%\taskize{\textbf{\uline{a}}ccbbbaba}
+% & {\paramx} & --
+\input{figures/declare-tikz/init}
+\\
+$\End{\paramx}$ &
+{\paramx} is the \emph{last} to occur &
+%\taskize{bcaaccbbbab\textbf{\uline{a}}}
+% & {\paramx} & --
+\input{figures/declare-tikz/end}
+\\
+\midrule
+\multicolumn{3}{l}{Relation constraints}\\
+\midrule
+$\ResEx{\paramx}{\paramy}$ &
+If {\paramx} occurs, then {\paramy} occurs as well &
+%\taskize{\textbf{b}c\textbf{\uline{a}}\uline{a}ccbbb\uline{a}b\uline{a}}
+% & {\paramx} & \paramy
+\input{figures/declare-tikz/resex}
+\\
+$\Resp{\paramx}{\paramy}$ &
+If {\paramx} occurs, then {\paramy} occurs after {\paramx} &
+%\taskize{bc\textbf{\uline{a}}\uline{a}cc\textbf{b}bb\textbf{\uline{a}}\textbf{b}}
+% & {\paramx} & \paramy
+\input{figures/declare-tikz/resp}
+\\
+$\AltResp{\paramx}{\paramy}$ &
+Each time {\paramx} occurs, then {\paramy} occurs afterwards, before {\paramx} recurs &
+%\taskize{bc\textbf{\uline{a}}cc\textbf{b}bb\textbf{\uline{a}}\textbf{b}}
+% & {\paramx} & \paramy
+\input{figures/declare-tikz/altresp}
+\\
+$\ChaResp{\paramx}{\paramy}$ &
+Each time {\paramx} occurs, then {\paramy} occurs immediately after &
+%\taskize{bc\textbf{\uline{a}}\textbf{b}bb\textbf{\uline{a}}\textbf{b}}
+% & {\paramx} & \paramy
+\input{figures/declare-tikz/chnresp}
+\\
+$\Prec{\paramx}{\paramy}$ &
+{\paramy} occurs only if preceded by {\paramx} &
+%\taskize{c\textbf{a}acc\textbf{\uline{b}}\uline{b}\uline{b}a\uline{b}a}
+% & {\paramy} & \paramx
+\input{figures/declare-tikz/prec}
+\\
+$\AltPrec{\paramx}{\paramy}$ &
+Each time {\paramy} occurs, it is preceded by {\paramx} and no other {\paramy} can recur in between &
+%\taskize{ca\textbf{a}cc\textbf{\uline{b}}\textbf{a}\textbf{\uline{b}}a}
+% & {\paramy} & \paramx
+\input{figures/declare-tikz/altprec}
+\\
+$\ChaPrec{\paramx}{\paramy}$ &
+Each time {\paramy} occurs, then {\paramx} occurs immediately before &
+%\taskize{c\textbf{a}\textbf{\uline{b}}\textbf{a}\textbf{\uline{b}}a}
+% & {\paramy} & \paramx
+\input{figures/declare-tikz/chnprec}
+\\
+\midrule
+\multicolumn{3}{l}{Mutual relation constraints}\\
+\midrule
+$\CoExi{\paramx}{\paramy}$ &
+If {\paramy} occurs, then {\paramx} occurs, and viceversa &
+%\taskize{\textbf{\uline{b}}c\textbf{\uline{a}}cc\uline{bbbaba}}
+% & \paramx, {\paramy} & \paramy, \paramx
+\input{figures/declare-tikz/coex}
+\\
+$\Succ{\paramx}{\paramy}$ &
+{\paramx} occurs if and only if it is followed by {\paramy} &
+%\taskize{c\textbf{\uline{a}}\uline{a}cc\textbf{\uline{b}}\uline{bbab}}
+% & \paramx, {\paramy} & \paramy, \paramx
+\input{figures/declare-tikz/succ}
+\\
+$\AltSucc{\paramx}{\paramy}$ &
+{\paramx} and {\paramy} occur if and only if the latter follows the former, and they alternate each other &
+%\taskize{c\textbf{\uline{a}}cc\textbf{\uline{b}}\textbf{\uline{a}}\textbf{\uline{b}}}
+% & \paramx, {\paramy} & \paramy, \paramx
+\input{figures/declare-tikz/altsucc}
+\\
+$\ChaSucc{\paramx}{\paramy}$ &
+{\paramx} and {\paramy} occur if and only if the latter immediately follows the former &
+%\taskize{c\textbf{\uline{a}}\textbf{\uline{b}}\textbf{\uline{a}}\textbf{\uline{b}}}
+% & \paramx, {\paramy} & \paramy, \paramx
+\input{figures/declare-tikz/chnsucc}
+\\
+\midrule
+\multicolumn{3}{l}{Negative relation constraints}\\
+\midrule
+$\NotCoExi{\paramx}{\paramy}$ &
+{\paramx} and {\paramy} never occur together &
+%\taskize{c\uline{aa}cc\uline{a}}
+% & \paramx, {\paramy} & \paramy, \paramx
+\input{figures/declare-tikz/notcoex}
+\\
+$\NotSucc{\paramx}{\paramy}$ &
+{\paramx} can never occur before {\paramy} &
+%\taskize{bc\textbf{\uline{a}}\uline{a}cc\uline{a}}
+% & \paramx, {\paramy} & \paramy, \paramx
+\input{figures/declare-tikz/notsucc}
+\\
+$\NotChaSucc{\paramx}{\paramy}$ &
+{\paramx} and {\paramy} occur if and only if the latter does not immediately follows the former &
+%\taskize{bc\uline{a}\textbf{\uline{a}}cc\textbf{b}bbb\uline{a}}
+% & \paramx, {\paramy} & \paramy, \paramx
+\input{figures/declare-tikz/notchnsucc}
+\\
+\bottomrule
+\end{tabular}
+\end{scriptsize} 
